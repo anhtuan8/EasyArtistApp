@@ -1,4 +1,4 @@
-package com.example.easyartistapp.ui.dashboard;
+package ie.app.easyartistapp.ui.dashboard;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

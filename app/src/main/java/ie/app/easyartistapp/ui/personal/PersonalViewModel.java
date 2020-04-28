@@ -1,4 +1,4 @@
-package com.example.easyartistapp.ui.notifications;
+package ie.app.easyartistapp.ui.notifications;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
