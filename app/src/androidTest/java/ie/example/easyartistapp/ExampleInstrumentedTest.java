@@ -1,4 +1,4 @@
-package com.example.easyartistapp;
+package ie.example.easyartistapp;
 
 import android.content.Context;
 

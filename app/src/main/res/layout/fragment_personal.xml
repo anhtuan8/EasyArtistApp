@@ -7,7 +7,7 @@
     tools:context="ie.app.easyartistapp.ui.personal.PersonalFragment">
 
     <TextView
-        android:id="@+id/text_notifications"
+        android:id="@+id/text_personal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

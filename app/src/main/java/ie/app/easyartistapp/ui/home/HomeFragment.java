@@ -1,4 +1,4 @@
-package com.example.easyartistapp.ui.home;
+package ie.app.easyartistapp.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
