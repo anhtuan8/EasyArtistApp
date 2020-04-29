@@ -1,4 +1,4 @@
-package com.example.easyartistapp.ui.home;
+package ie.app.easyartistapp.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.easyartistapp.R;
+import ie.app.easyartistapp.R;
 
 public class HomeFragment extends Fragment {
 

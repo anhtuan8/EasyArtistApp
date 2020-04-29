@@ -1,4 +1,4 @@
-package com.example.easyartistapp.ui.home;
+package ie.app.easyartistapp.ui.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
