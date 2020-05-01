@@ -5,4 +5,9 @@
     <string name="title_personal">Personal</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
+    <string name="title_appbar_search">Search</string>
+    <string name="title_appbar_logo">Logo</string>
+    <string name="title_appbar_drawer">Drawer</string>
+    <string name="about">About</string>
+    <string name="feedback">Feedback</string>
 </resources>
