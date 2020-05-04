@@ -4,7 +4,10 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name ="topic_imageSize">150dp</dimen>
     <dimen name="topic_item_vertical_margin">12dp</dimen>
-    <dimen name="cardview_compat_inset_shadow">1dp</dimen>
-    <dimen name="cardview_default_elevation">2dp</dimen>
-    <dimen name="cardview_default_radius">2dp</dimen>
+    <dimen name="cardview_compat_inset_shadow">2dp</dimen>
+    <dimen name="cardview_default_elevation">5dp</dimen>
+    <dimen name="cardview_default_radius">5dp</dimen>
+    <dimen name="favourite_item_imageWidth">100dp</dimen>
+    <dimen name="favourite_itemHeight">50dp</dimen>
+    <dimen name="favourite_item_padding">10dp</dimen>
 </resources>
