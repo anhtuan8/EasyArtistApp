@@ -12,9 +12,10 @@ class DatabaseManager:
         self.bucket = storage.bucket('easy-artist-60842.appspot.com')
 
     def _upload_blob(self, source_file_name, is_image=True):
-        """Uploads a file to the bucket."""
-        # source_file_name = "local/path/to/file"
-        # isImage = True/False, identify which directory file will be saved
+        """Uploads a file to the bucket
+            source_file_name = "local/path/to/file"
+            isImage = True/False, identify which directory file will be saved
+        """
         file_tag = source_file_name.split('/')[-1].split('.')[-1]
         hash_name = str(abs(hash(source_file_name)))
         if is_image:
@@ -33,17 +34,22 @@ class DatabaseManager:
         """
         sub_json_tree = {}
         # Check whether the link is file or not. If link is file, push to storage, get link
+        uuid_is_not_assigned = True
         for f in os.scandir(local_content_path):
             file_name = f.path.split('/')[-1]
+
             if os.path.isfile(f.path):
                 if f.path.endswith(".txt"):
                     download_link = self._upload_blob(f.path, is_image=False)
                 else:
                     download_link = self._upload_blob(f.path, is_image=True)
                 sub_json_tree[file_name] = download_link
+                if uuid_is_not_assigned:
+                    sub_json_tree["uuid"] = shortuuid.uuid()
+                    uuid_is_not_assigned = False
             else:
-                sub_json_tree["uuid"] = shortuuid.uuid()
                 sub_json_tree[file_name] = self.__create_json_tree(f.path)
+
         return sub_json_tree
 
     def create_new_database(self, root_content_path):
@@ -60,6 +66,7 @@ class DatabaseManager:
             try:
                 current_folder = section_path.split('/')[-1]
                 section_dict = self.__create_json_tree(section_path)
+                print(section_dict)
                 doc_ref = self.db.collection(u'contents').document(current_folder)
                 doc_ref.set(
                     section_dict
