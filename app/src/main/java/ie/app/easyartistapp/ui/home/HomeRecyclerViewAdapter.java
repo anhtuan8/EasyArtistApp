@@ -1,17 +1,17 @@
 package ie.app.easyartistapp.ui.home;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,66 +19,65 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import ie.app.easyartistapp.R;
+import ie.app.easyartistapp.ui.article.ArticleActivity;
 
-public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder> {
+public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     private static final String TAG = "HomeRecyclerViewAdapter";
 
-    private ArrayList<String> topicImages = new ArrayList<>();
-    private ArrayList<String> topicTitles = new ArrayList<>();
-    private ArrayList<String> topicDescriptions = new ArrayList<>();
-    Context topicContext;
+    private ArrayList<String> images = new ArrayList<>();
+    private ArrayList<String> titles = new ArrayList<>();
+    private ArrayList<String> descriptions = new ArrayList<>();
+    Context context;
 
     public HomeRecyclerViewAdapter(Context context, ArrayList<String> images, ArrayList<String> titles, ArrayList<String> descriptions){
-        this.topicContext = context;
-        this.topicImages = images;
-        this.topicTitles = titles;
-        this.topicDescriptions = descriptions;
+        this.context = context;
+        this.images = images;
+        this.titles = titles;
+        this.descriptions = descriptions;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_listitem,parent,false);
-        ViewHolder holder = new ViewHolder(view);
+        HomeViewHolder holder = new HomeViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final HomeViewHolder holder, final int position) {
         Log.d(TAG,"onBindViewHolder called");
         //load image to position
-        Glide.with(topicContext).asBitmap().load(topicImages.get(position)).into(holder.topicImage);
+        Glide.with(context).asBitmap().load(images.get(position)).into(holder.getTopicImage());
         //bind topic title and description
-        holder.topicTitle.setText(topicTitles.get(position));
-        holder.topicDescription.setText(topicDescriptions.get(position));
-        holder.topicItem.setOnClickListener(new View.OnClickListener() {
+        holder.getTopicTitle().setText(titles.get(position));
+        holder.getTopicDescription().setText(descriptions.get(position));
+        holder.getTopicItem().setOnClickListener(new View.OnClickListener() {
             @Override
+            /**
+             * Call article list in corresponding topic title, or article activity with corresponding article title
+             */
             public void onClick(View v) {
-                Log.d(TAG, "onClick: Clicked " + topicTitles.get(position));
-
-                Toast.makeText(topicContext,topicTitles.get(position),Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onClick: Clicked " + titles.get(position));
+                Toast.makeText(context, titles.get(position),Toast.LENGTH_SHORT).show();
+                if(holder.isTopicList()){
+                    //call HomeTopicFragment
+                    Log.d(TAG, "calling Home Topic Fragment.");
+                }
+                else{
+                    //call HomeArticleFragment
+                    Log.d(TAG, "calling HomeArticleActivity");
+                    Activity activityFromContext = (Activity) context;
+                    Intent intent = new Intent(activityFromContext, ArticleActivity.class);
+                    activityFromContext.startActivity(intent);
+                }
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return topicTitles.size();
+        return titles.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        CardView topicCardView;
-        ConstraintLayout topicItem;
-        ImageView topicImage;
-        TextView topicTitle, topicDescription;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            topicCardView = itemView.findViewById(R.id.topicCardView);
-            topicItem = itemView.findViewById(R.id.topicItem);
-            topicImage = itemView.findViewById(R.id.topicImage);
-            topicTitle = itemView.findViewById(R.id.topicTitle);
-            topicDescription = itemView.findViewById(R.id.topicDescription);
-        }
-    }
 }

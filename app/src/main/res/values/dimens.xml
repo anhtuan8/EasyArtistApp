@@ -10,4 +10,5 @@
     <dimen name="favourite_item_imageWidth">100dp</dimen>
     <dimen name="favourite_itemHeight">50dp</dimen>
     <dimen name="favourite_item_padding">10dp</dimen>
+    <dimen name="article_tag_horizontal_margin">2dp</dimen>
 </resources>
