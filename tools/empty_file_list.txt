@@ -1,0 +1,71 @@
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Conceptual art/urban-light/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Conceptual art/a-subtlety/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Conceptual art/the-new-black-yoga/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Abstract expressionism/dos-personajes-atacados-por-perros/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Abstract expressionism/ph-455-clyfford-still/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Impressionism/portrait-of-madame-matisse-the-green-line/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Romanticism/the-nightmare/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Romanticism/the-last-day-of-pompeii/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Art Movements/Street art/mural-by-banksy/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Pablo Picasso/the-frugal-repast-le-repas-frugal/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Pablo Picasso/tete-de-femme/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Pablo Picasso/melancholy-woman/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Pablo Picasso/still-life/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Pablo Picasso/portrait-of-suzanne-bloch/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Utamaro/toji-san-bijin-three-beauties-of-the-present-dayfrom-bijin-ga-pictures-of-beautiful-women-published-by-tsutaya-juzaburo/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Utamaro/three-beauties-of-the-present-day-1793/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Utamaro/a-woman-and-a-man-arranging-flowers-for-the-tsukimi-moon-festival/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Utamaro/geisha-en-haar-geliefde/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Utamaro/-the-four-accomplishments-kinkishoga/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Utamaro/vlinders-en-libelle-bij-roze-bloemen/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Utamaro/two-beauties-with-bamboo/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Michelangelo/dying-slave/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Michelangelo/male-nude-recto/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Michelangelo/seated-young-male-nude-and-two-arm-studies-recto-c-1510-11/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Michelangelo/two-nudes-fighting/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Michelangelo/pieta/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Lovis Corinth/selfportrait-with-skeleton-corinth-lovis/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Lovis Corinth/female-nude-defending-herself-weiblicher-akt-in-abwehr/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Lovis Corinth/gerhart-hauptmann/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Lovis Corinth/death-and-the-youth-tod-und-jngling/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Lovis Corinth/the-crucifixion-christus-am-kreuz/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Lovis Corinth/the-actor-rudolf-rittner-in-the-role-of-florian-geyer/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Lovis Corinth/the-banquet-of-trimalchio-plxi/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Lovis Corinth/priest-reading-lesender-mnch/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/JR/gezicht-op-een-bosmeer/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/JR/portret-van-een-jonge-man/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/JR/tankard/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/JR/bassoon-in-c/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/JR/inside-out-project-21/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/JR/inside-out-project-25/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/JR/portret-van-cornelis-troost/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/JR/plattegrond-van-amsterdam/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/-wilderness-colors/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/album-of-flowers-and-portrait-of-shitao-peonies/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/-hermitage-in-mount-lu/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/reminiscences-of-nanjing-farewell-to-spring-artist-shitao/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/-bamboo-in-wind-and-rain/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/orchids-bamboo-and-rock/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/-searching-for-immortals/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/reminiscences-of-nanjing-washing-the-inkstone/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Shitao/reminiscences-of-nanjing-riding-the-clouds/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Victor Vasarely/dia-or-cf/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Victor Vasarely/tau-ceti-fond-bleu/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Victor Vasarely/teke/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Victor Vasarely/zett-ksz/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Victor Vasarely/optical-cube/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Bui Xuan Phai/coal-mine-bui-xuan-phai/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Wassily Kandinsky/white-zig-zags/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Wassily Kandinsky/blau-blue/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Wassily Kandinsky/points/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Wassily Kandinsky/composition/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Wassily Kandinsky/joyous-ascent-from-the-masters-portfolio-of-the-staatliches-bauhaus-1923/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Wassily Kandinsky/improvisation/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Wassily Kandinsky/study-for-painting-with-white-form/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Mediums/Ink/bamboo-in-ink-kim-gyu-jin/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Mediums/Ink/the-death-of-socrates/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Mediums/Ink/-south-wind-clear-sky-gaif-kaisei-also-known-as-red-fuji-from-the-series-thirty-six-views-of-mount-fuji-fugaku-sanjrokkei/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Mediums/Oil paint/charing-cross-bridge-reflections-on-the-thames-claude-monet/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Mediums/Pencil/self-portrait-as-nice-white-lady/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Mediums/Paper/the-underwave-off-kanagawa/description.txt
+/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Mediums/Paper/a-basket-of-clams/description.txt
