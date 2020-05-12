@@ -1,4 +1,4 @@
-package ie.app.easyartistapp.ui.dashboard;
+package ie.app.easyartistapp.ui.camera;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,19 +12,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.easyartistapp.R;
+import ie.app.easyartistapp.R;
 
-public class DashboardFragment extends Fragment {
+public class CameraFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private CameraViewModel cameraViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        cameraViewModel =
+                ViewModelProviders.of(this).get(CameraViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_camera, container, false);
+        final TextView textView = root.findViewById(R.id.text_camera);
+        cameraViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

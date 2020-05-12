@@ -1,4 +1,4 @@
-package com.example.easyartistapp.ui.home;
+package ie.app.easyartistapp.ui.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,5 +15,14 @@ public class HomeViewModel extends ViewModel {
 
     public LiveData<String> getText() {
         return mText;
+    }
+
+    public class TopicItem{
+        String topicImage, topicTitle, topicDescription;
+        public TopicItem(String image, String title, String description){
+            this.topicDescription = description;
+            this.topicTitle = title;
+            this.topicImage = image;
+        }
     }
 }

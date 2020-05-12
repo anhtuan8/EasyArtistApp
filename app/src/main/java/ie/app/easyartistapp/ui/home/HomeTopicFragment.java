@@ -1,3 +1,9 @@
+/**
+ * Now this Fragment is exactly the same with HomeFragment and isn't used.
+ * In the future, viewing article list may be the starting HomeFragment.
+ * Thus, topic list view will be moved from HomeFragment to another activity navigated from the drawer.
+ */
+
 package ie.app.easyartistapp.ui.home;
 
 import android.os.Bundle;
@@ -8,10 +14,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +24,7 @@ import java.util.ArrayList;
 
 import ie.app.easyartistapp.R;
 
-public class HomeFragment extends Fragment {
-
+public class HomeTopicFragment extends Fragment {
     private HomeViewModel homeViewModel;
 
     private ArrayList<String> articleImages = new ArrayList<>();
@@ -34,26 +37,16 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home_topic, container, false);
+        TextView topicName = root.findViewById(R.id.topicName);
+        //set topicName = topicName f"rom HomeViewModel (implement later)
+        topicName.setText("Topic Name");
 
         Log.d(TAG, "onCreateView: started");
-        final TextView topicName = root.findViewById(R.id.topicName);
-        //set topicName = topicName from HomeViewModel (implement later)
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                topicName.setText(s);
-            }
-        });
 
         initImageBitmaps(root);
         return root;
     }
 
-    /**
-     * Next version: implement an Article class, store in HomeViewModel and get Images, Titles, Descriptions from ViewModel
-     * Next next version: popular and recommend RecyclerList
-     * @param view
-     */
     private void initImageBitmaps(View view){
         Log.d(TAG, "initImageBitmaps: started");
 
@@ -86,9 +79,8 @@ public class HomeFragment extends Fragment {
 
     private void initRecycleView(View view){
         Log.d(TAG, "initRecycleView: started");
-        Log.v(TAG, getActivity().getPackageName());
         RecyclerView homeRecyclerView = view.findViewById(R.id.home_article_list);
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), articleImages, articleTitles, articleDescriptions);
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(),articleImages,articleTitles,articleDescriptions);
         homeRecyclerView.setAdapter(adapter);
         homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
