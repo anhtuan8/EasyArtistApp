@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.easyartistapp">
+    package="ie.app.easyartistapp">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -9,14 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--Main Activity-->
         <activity
-            android:name=".MainActivity"
+            android:name="ie.app.easyartistapp.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!--Article Activity-->
+        <activity
+            android:name="ie.app.easyartistapp.ui.article.ArticleActivity"
+            android:parentActivityName="ie.app.easyartistapp.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ie.app.easyartistapp.MainActivity"/>
         </activity>
     </application>
 
