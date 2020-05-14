@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ie.app.easyartistapp.R;
+import ie.app.easyartistapp.entityObject.Article;
 
 public class HomeFragment extends Fragment {
 
@@ -33,19 +34,26 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home_topic, container, false);
+        final View root = inflater.inflate(R.layout.fragment_home_topic, container, false);
 
         Log.d(TAG, "onCreateView: started");
         final TextView topicName = root.findViewById(R.id.topicName);
         //set topicName = topicName from HomeViewModel (implement later)
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        topicName.setText("Bui Xuan Phai");
+        homeViewModel.getmArticles().observe(getViewLifecycleOwner(), new Observer<ArrayList<Article>>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                topicName.setText(s);
+            public void onChanged(ArrayList<Article> articles) {
+                articleTitles.add(articles.get(0).getName());
+                articleDescriptions.add(articles.get(0).getDescription());
+                articleImages.add(articles.get(0).getImage_link());
+                initImageBitmaps(root);
+
+                Log.d(TAG, "onChanged: articles size " + articles.size());
+                Log.d(TAG, "article title: " + articles.get(0).getName());
             }
+
         });
 
-        initImageBitmaps(root);
         return root;
     }
 

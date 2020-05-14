@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1087853268612",
+    "firebase_url": "https://easy-artist-60842.firebaseio.com",
+    "project_id": "easy-artist-60842",
+    "storage_bucket": "easy-artist-60842.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087853268612:android:4af9a29b1507a28ef37cd1",
+        "android_client_info": {
+          "package_name": "com.example.easyartistapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087853268612-k1te60rag7s75ms3h5mts35bfp033nsq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAb4r5RaTbWOnGacr7a6FV_wJmvOnDZxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1087853268612-k1te60rag7s75ms3h5mts35bfp033nsq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087853268612:android:4e62737f61499c07f37cd1",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087853268612-k1te60rag7s75ms3h5mts35bfp033nsq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAb4r5RaTbWOnGacr7a6FV_wJmvOnDZxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1087853268612-k1te60rag7s75ms3h5mts35bfp033nsq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
