@@ -38,6 +38,10 @@ public class HomeViewModel extends ViewModel {
         getArticlesFromDB("Bui Xuan Phai");
     }
 
+    /**
+     * Get article list by topic name
+     * @param name_topic
+     */
     public void getArticlesFromDB(String name_topic){
         Log.d(TAG, "getArticlesFromDB: called");
         easyArtistDb = FirebaseFirestore.getInstance();
