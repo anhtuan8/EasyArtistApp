@@ -31,25 +31,22 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Article>> mArticles;
     private ArrayList<Article> articles = new ArrayList<>();
     private FirebaseFirestore easyArtistDb;
-    private FirebaseStorage storage;
 
     public HomeViewModel() {
         mArticles = new MutableLiveData<>();
-        getArticlesFromDB("Bui Xuan Phai");
+        getHomeViewArticlesFromDB();
     }
 
     /**
-     * Get article list by topic name
-     * @param name_topic
+     * Get all list articles for home view
+     * @param
      */
-    public void getArticlesFromDB(String name_topic){
+    public void getHomeViewArticlesFromDB(){
         Log.d(TAG, "getArticlesFromDB: called");
         easyArtistDb = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
         final CollectionReference artistRef = easyArtistDb
                 .collection("articles");
-        Query query = artistRef.whereEqualTo("topic_name", name_topic);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        artistRef.orderBy("article_id").limit(10).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

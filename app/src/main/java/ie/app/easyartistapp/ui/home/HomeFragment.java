@@ -43,13 +43,15 @@ public class HomeFragment extends Fragment {
         homeViewModel.getmArticles().observe(getViewLifecycleOwner(), new Observer<ArrayList<Article>>() {
             @Override
             public void onChanged(ArrayList<Article> articles) {
-                articleTitles.add(articles.get(0).getName());
-                articleDescriptions.add(articles.get(0).getDescription());
-                articleImages.add(articles.get(0).getImage_link());
+                for (Article a : articles) {
+                    articleTitles.add(a.getName());
+                    articleDescriptions.add(a.getDescription());
+                    articleImages.add(a.getImage_link());
+                }
                 initImageBitmaps(root);
 
-                Log.d(TAG, "onChanged: articles size " + articles.size());
-                Log.d(TAG, "article title: " + articles.get(0).getName());
+//                Log.d(TAG, "onChanged: articles size " + articles.size());
+//                Log.d(TAG, "article title: " + articles.get(0).getName());
             }
 
         });
