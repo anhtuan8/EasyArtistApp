@@ -53,7 +53,20 @@ public class PersonalFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText("OBJECT" + (position + 1));
+                switch (position){
+                    case 0:{
+                        tab.setText("Yêu thích");
+                        break;
+                    }
+                    case 1:{
+                        tab.setText("Bộ sưu tập");
+                        break;
+                    }
+                    default:{
+                        tab.setText("OBJECT" + (position + 1));
+                        break;
+                    }
+                }
             }
         }).attach();
     }

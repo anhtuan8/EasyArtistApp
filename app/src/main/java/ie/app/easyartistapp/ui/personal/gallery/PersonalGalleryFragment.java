@@ -25,8 +25,25 @@ public class PersonalGalleryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_personal_gallery,container,false);
         //imagePaths = galleryViewModel.getImagePaths();
+        createPathList();
         initRecyclerView(root);
         return root;
+    }
+
+    private void createPathList(){
+        imagePaths.add("ie/app/easyartistapp/images/1.png");
+        imagePaths.add("ie/app/easyartistapp/images/2.png");
+        imagePaths.add("ie/app/easyartistapp/images/3.png");
+        imagePaths.add("ie/app/easyartistapp/images/4.png");
+        imagePaths.add("ie/app/easyartistapp/images/5.png");
+        imagePaths.add("ie/app/easyartistapp/images/6.png");
+        imagePaths.add("ie/app/easyartistapp/images/7.png");
+        imagePaths.add("ie/app/easyartistapp/images/8.png");
+        imagePaths.add("ie/app/easyartistapp/images/9.png");
+        imagePaths.add("ie/app/easyartistapp/images/10.png");
+        imagePaths.add("ie/app/easyartistapp/images/11.png");
+        imagePaths.add("ie/app/easyartistapp/images/12.png");
+        imagePaths.add("ie/app/easyartistapp/images/13.png");
     }
 
     public void initRecyclerView(View view){
