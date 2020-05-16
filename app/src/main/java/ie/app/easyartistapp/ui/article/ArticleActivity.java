@@ -34,7 +34,7 @@ public class ArticleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        articleViewModel = new ArticleViewModel();
+        articleViewModel = new ArticleViewModel("id");
         setContentView(R.layout.activity_home_article);
 
         articleTitle = findViewById(R.id.articleTitle);

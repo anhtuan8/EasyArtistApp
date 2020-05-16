@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ie.app.easyartistapp.ui.personal.favourite.PersonalFavouriteFragment;
+import ie.app.easyartistapp.ui.personal.gallery.PersonalGalleryFragment;
 
 public class PersonalAdapter extends FragmentStateAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -28,6 +29,10 @@ public class PersonalAdapter extends FragmentStateAdapter {
         switch (position){
             case 0: {
                 Fragment fragment = new PersonalFavouriteFragment();
+                return fragment;
+            }
+            case 1:{
+                Fragment fragment = new PersonalGalleryFragment();
                 return fragment;
             }
             default:{
