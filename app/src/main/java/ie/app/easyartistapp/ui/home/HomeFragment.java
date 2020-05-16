@@ -5,11 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -25,33 +22,30 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
-    private ArrayList<String> articleImages = new ArrayList<>();
-    private ArrayList<String> articleTitles = new ArrayList<>();
-    private ArrayList<String> articleDescriptions = new ArrayList<>();
+    private ArrayList<Article> articleList = new ArrayList<>();
+//
+//    private ArrayList<String> articleImages = new ArrayList<>();
+//    private ArrayList<String> articleTitles = new ArrayList<>();
+//    private ArrayList<String> articleDescriptions = new ArrayList<>();
 
     private static final String TAG = "HomeFragment";
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
-        final View root = inflater.inflate(R.layout.fragment_home_topic, container, false);
+        final View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         Log.d(TAG, "onCreateView: started");
-        final TextView topicName = root.findViewById(R.id.topicName);
+//        final TextView topicName = root.findViewById(R.id.topicName);
         //set topicName = topicName from HomeViewModel (implement later)
-        topicName.setText("Bui Xuan Phai");
+//        topicName.setText("Bui Xuan Phai");
         homeViewModel.getmArticles().observe(getViewLifecycleOwner(), new Observer<ArrayList<Article>>() {
             @Override
             public void onChanged(ArrayList<Article> articles) {
                 for (Article a : articles) {
-                    articleTitles.add(a.getName());
-                    articleDescriptions.add(a.getDescription());
-                    articleImages.add(a.getImage_link());
+                    articleList.add(new Article(a.getArticle_id(),a.getDescription(),a.getDetail(),a.getImage_link(),a.getName(),a.getTopic_id(),a.getTopic_name()));
                 }
                 initImageBitmaps(root);
-
-//                Log.d(TAG, "onChanged: articles size " + articles.size());
-//                Log.d(TAG, "article title: " + articles.get(0).getName());
             }
 
         });
@@ -67,38 +61,14 @@ public class HomeFragment extends Fragment {
     private void initImageBitmaps(View view){
         Log.d(TAG, "initImageBitmaps: started");
 
-        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-        articleTitles.add("Starry Night");
-        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
-
-        articleImages.add("https://i.pinimg.com/originals/33/fc/95/33fc959336bbeec077b0f4daceffc891.jpg");
-        articleTitles.add("The Last Supper");
-        articleDescriptions.add("Bua an cuoi cung cua Chua Jesus cung cac mon do");
-
-        articleImages.add("https://www.wallpaperflare.com/static/431/740/850/the-divine-comedy-dante-s-inferno-dante-alighieri-gustave-dor%C3%A9-wallpaper.jpg");
-        articleTitles.add("Man on canoe");
-        articleDescriptions.add("Dia nguc");
-
-        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-        articleTitles.add("Starry Night");
-        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
-
-        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-        articleTitles.add("Starry Night");
-        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
-
-        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-        articleTitles.add("Starry Night");
-        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
-
-        initRecycleView(view);
+        initRecyclerView(view);
     }
 
-    private void initRecycleView(View view){
+    private void initRecyclerView(View view){
         Log.d(TAG, "initRecycleView: started");
         Log.v(TAG, getActivity().getPackageName());
         RecyclerView homeRecyclerView = view.findViewById(R.id.home_article_list);
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), articleImages, articleTitles, articleDescriptions);
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), articleList);
         homeRecyclerView.setAdapter(adapter);
         homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -6,6 +6,16 @@ public class Article {
     private String detail;
     private String image_link;
 
+    public Article(String article_id, String description, String detail, String image_link, String name, String topic_id, String topic_name){
+        this.article_id = article_id;
+        this.description = description;
+        this.detail = detail;
+        this.image_link = image_link;
+        this.name = name;
+        this.topic_id = topic_id;
+        this.topic_name = topic_name;
+    }
+
     public String getArticle_id() {
         return article_id;
     }

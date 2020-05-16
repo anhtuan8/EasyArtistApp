@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="?attr/actionBarSize"
+    android:layout_marginBottom="?attr/actionBarSize"
     tools:context="ie.app.easyartistapp.ui.home.HomeFragment">
 
     <TextView

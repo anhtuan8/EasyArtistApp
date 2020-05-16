@@ -18,7 +18,7 @@ public class FavouriteViewHolder extends RecyclerView.ViewHolder {
     private TextView personalFavouriteItemTitle;
     public FavouriteViewHolder(@NonNull View itemView) {
         super(itemView);
-        topicCardView = itemView.findViewById(R.id.topicCardView);
+        topicCardView = itemView.findViewById(R.id.cardView);
         personalFavouriteItem = itemView.findViewById(R.id.personalFavouriteItem);
         personalFavouriteItemImage = itemView.findViewById(R.id.personalFavouriteItemImage);
         personalFavouriteItemTitle = itemView.findViewById(R.id.personalFavouriteItemTitle);

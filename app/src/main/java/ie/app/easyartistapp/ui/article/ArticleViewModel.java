@@ -34,17 +34,15 @@ public class ArticleViewModel extends ViewModel {
     MutableLiveData<String> articleContent;
     MutableLiveData<String> articleTitle;
     MutableLiveData<String> topicTitle;
+    MutableLiveData<String> articleImage;
     MutableLiveData<ArrayList<String>> tagNames;
 
     public ArticleViewModel(String articleId){
         articleContent = new MutableLiveData<>();
 //        articleContent.setValue("<h1>Article content</h1><p>Article content Article content Article content</p><img src=\"https://i.pinimg.com/originals/33/fc/95/33fc959336bbeec077b0f4daceffc891.jpg\"/>");
-
         articleTitle = new MutableLiveData<>();
-//        articleTitle.setValue("The Last Supper Painting");
-
         topicTitle = new MutableLiveData<>();
-//        topicTitle.setValue("Renaissance");
+        articleImage = new MutableLiveData<>();
 
         tagNames = new MutableLiveData<>();
         ArrayList<String> tags = new ArrayList<>();
@@ -70,6 +68,7 @@ public class ArticleViewModel extends ViewModel {
                         articleContent.setValue(art.getDetail());
                         articleTitle.setValue(art.getName());
                         topicTitle.setValue(art.getTopic_name());
+                        articleImage.setValue(art.getImage_link());
                         Log.d(TAG, "onComplete: article title " + art.getName());
                     }
 
@@ -94,5 +93,9 @@ public class ArticleViewModel extends ViewModel {
 
     public LiveData<String> getTopicTitle() {
         return topicTitle;
+    }
+
+    public MutableLiveData<String> getArticleImage() {
+        return articleImage;
     }
 }

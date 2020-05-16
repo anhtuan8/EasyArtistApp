@@ -23,9 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ie.app.easyartistapp.R;
+import ie.app.easyartistapp.entityObject.Article;
 
 public class HomeTopicFragment extends Fragment {
     private HomeViewModel homeViewModel;
+
+    private ArrayList<Article> articles = new ArrayList<>();
 
     private ArrayList<String> articleImages = new ArrayList<>();
     private ArrayList<String> articleTitles = new ArrayList<>();
@@ -50,29 +53,29 @@ public class HomeTopicFragment extends Fragment {
     private void initImageBitmaps(View view){
         Log.d(TAG, "initImageBitmaps: started");
 
-        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-        articleTitles.add("Starry Night");
-        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
-
-        articleImages.add("https://i.pinimg.com/originals/33/fc/95/33fc959336bbeec077b0f4daceffc891.jpg");
-        articleTitles.add("The Last Supper");
-        articleDescriptions.add("Bua an cuoi cung cua Chua Jesus cung cac mon do");
-
-        articleImages.add("https://www.wallpaperflare.com/static/431/740/850/the-divine-comedy-dante-s-inferno-dante-alighieri-gustave-dor%C3%A9-wallpaper.jpg");
-        articleTitles.add("Man on canoe");
-        articleDescriptions.add("Dia nguc");
-
-        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-        articleTitles.add("Starry Night");
-        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
-
-        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-        articleTitles.add("Starry Night");
-        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
-
-        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-        articleTitles.add("Starry Night");
-        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
+//        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
+//        articleTitles.add("Starry Night");
+//        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
+//
+//        articleImages.add("https://i.pinimg.com/originals/33/fc/95/33fc959336bbeec077b0f4daceffc891.jpg");
+//        articleTitles.add("The Last Supper");
+//        articleDescriptions.add("Bua an cuoi cung cua Chua Jesus cung cac mon do");
+//
+//        articleImages.add("https://www.wallpaperflare.com/static/431/740/850/the-divine-comedy-dante-s-inferno-dante-alighieri-gustave-dor%C3%A9-wallpaper.jpg");
+//        articleTitles.add("Man on canoe");
+//        articleDescriptions.add("Dia nguc");
+//
+//        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
+//        articleTitles.add("Starry Night");
+//        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
+//
+//        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
+//        articleTitles.add("Starry Night");
+//        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
+//
+//        articleImages.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
+//        articleTitles.add("Starry Night");
+//        articleDescriptions.add("Buc tranh cua danh hoa Van gogh");
 
         initRecycleView(view);
     }
@@ -80,7 +83,7 @@ public class HomeTopicFragment extends Fragment {
     private void initRecycleView(View view){
         Log.d(TAG, "initRecycleView: started");
         RecyclerView homeRecyclerView = view.findViewById(R.id.home_article_list);
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(),articleImages,articleTitles,articleDescriptions);
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(),articles);
         homeRecyclerView.setAdapter(adapter);
         homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
