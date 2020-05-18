@@ -8,9 +8,11 @@
  */
 package ie.app.easyartistapp.ui.personal.favourite;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,62 +25,89 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ie.app.easyartistapp.entityObject.Article;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FavouriteViewModel {
-    private ArrayList<String> titles = new ArrayList<>();
-    private ArrayList<String> images = new ArrayList<>();
-    private FirebaseFirestore easyArtistDb;
+    private static final String TAG = "FavouriteViewModel";
 
-    public FavouriteViewModel(){
-//        titles.add("Buc tranh 1");
-//        images.add("https://kenh14cdn.com/thumb_w/640/Images/Uploaded/Share/2012/03/09/e06120309kpvangoghava.jpg");
-//        titles.add("Buc tranh 2");
-//        images.add("https://i.pinimg.com/originals/33/fc/95/33fc959336bbeec077b0f4daceffc891.jpg");
-//        titles.add("Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3tranh 3Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3Buc tranh 3");
-//        images.add("https://www.wallpaperflare.com/static/431/740/850/the-divine-comedy-dante-s-inferno-dante-alighieri-gustave-dor%C3%A9-wallpaper.jpg");
-        String favor_file = "abcd";
-        try {
-            getFavoriteArticle(favor_file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    private MutableLiveData<HashMap<String, Article>> mFavoriteArticleList;
+    private HashMap<String, Article> favoriteArticleList;
+    private ArrayList<String> articleIds;
+    private FirebaseFirestore easyArtistDb;
+    private Context context;
+
+    public FavouriteViewModel(Context context) throws IOException {
+        mFavoriteArticleList = new MutableLiveData<>();
+        favoriteArticleList = new HashMap<>();
+        articleIds = new ArrayList<>();
+        this.context = context;
+
+        String favor_file = "favorite.txt";
+
+//        writeToInternalFile(favor_file);
+        readFavoriteListFromInternalStorage(favor_file);
     }
 
-    public void getFavoriteArticle(String favor_file) throws FileNotFoundException {
-        File f = new File(favor_file);
-        ArrayList<String> list_id = new ArrayList<>();
-        BufferedReader bufferIn = null;
-        try{
-            String favor_id;
-            bufferIn = new BufferedReader(new FileReader(f));
-            while ((favor_id = bufferIn.readLine()) != null){
-                list_id.add(favor_id);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void writeToInternalFile(String filename) throws IOException {
+        ArrayList<String> ids = new ArrayList<>();
+        FileOutputStream outputStream;
+        outputStream = context.openFileOutput(filename, Context.MODE_APPEND);
+        ids.add("WNKAhWB8Qv6iFSGMCXpd3o");
+        ids.add("fLFCaCBBoXic3uVLYDRWCc");
+        ids.add("ZjKJqCDfb3iBL8nVvforFy");
+        ids.add("NjQTiY27W4vhH59dTSDJWK");
+        ids.add("UoqmMj5vYozzpB2t8qxop3");
+        ids.add("cUbu7FesS8fLUCeauzFtFV");
+        ids.add("2UnTSJCMewxo7jf5pcnbCN");
+        ids.add("X2a4vRcLvg4UttXakRXuLe");
+        ids.add("ZjKJqCDfb3iBL8nVvforFy");
+        ids.add("7mpu84qBkRJD94uWMxPthq");
+        ids.add("5omSbA2P9HD3GBTXzTbAW3");
+        ids.add("Qduy3z2VSqLeBA4EgEQUCS");
+        ids.add("WYtgwHzdxo2JdsKoJpxPaf");
+        ids.add("NjQTiY27W4vhH59dTSDJWK");
+        for(String id : ids){
+            String string = id +"\n";
+            outputStream.write(string.getBytes());
         }
-        finally {
-            try {
-                bufferIn.close();
-            }
-            catch (IOException e){
-                e.printStackTrace();
-            }
+        outputStream.close();
+        Log.d(TAG, "writeToInternalFile: write completed");
+    }
+
+    private void readFavoriteListFromInternalStorage(String filename) throws IOException {
+        FileInputStream inputStream;
+        inputStream = context.openFileInput(filename);
+        DataInputStream in = new DataInputStream(inputStream);
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(in));
+        String strLine;
+        //Đọc từng dòng
+        while ((strLine = br.readLine()) != null) {
+            articleIds.add(strLine);
         }
+        in.close();
+        getFavoriteArticle();
+    }
+
+    private void getFavoriteArticle() {
         easyArtistDb = FirebaseFirestore.getInstance();
         final CollectionReference artistRef = easyArtistDb
                 .collection("articles");
-        for (String s: list_id){
+        for (String s: articleIds){
             Query query = artistRef.whereEqualTo("article_id",s);
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -86,24 +115,19 @@ public class FavouriteViewModel {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Article art = document.toObject(Article.class);
-                            titles.add(art.getName());
-                            images.add(art.getImage_link());
-                            Log.d(TAG, "onComplete: article title " + art.getName());
+                            favoriteArticleList.putIfAbsent(art.getArticle_id(),art);
+                            Log.d(TAG, "onComplete: article title last " + art.getName());
+                            mFavoriteArticleList.setValue(favoriteArticleList);
                         }
-
                     } else {
-                        Log.d("data", "Error getting documents: ", task.getException());
+                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
                 }
             });
         }
     }
 
-    public ArrayList<String> getImages() {
-        return images;
-    }
-
-    public ArrayList<String> getTitles() {
-        return titles;
+    public MutableLiveData<HashMap<String, Article>> getmFavoriteArticleList() {
+        return mFavoriteArticleList;
     }
 }

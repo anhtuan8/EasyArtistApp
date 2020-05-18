@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/favourite_item_padding"
+            android:paddingHorizontal="@dimen/favourite_item_padding"
             android:textAppearance="@style/Title"
             app:layout_constraintLeft_toRightOf="@id/personalFavouriteItemImage"
             app:layout_constraintTop_toTopOf="parent" />

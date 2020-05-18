@@ -1,5 +1,7 @@
 package ie.app.easyartistapp.entityObject;
 
+import androidx.annotation.Nullable;
+
 public class Article {
     private String article_id;
     private String description;
@@ -14,6 +16,12 @@ public class Article {
         this.name = name;
         this.topic_id = topic_id;
         this.topic_name = topic_name;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        Article aObj = (Article)obj;
+        return this.article_id.equalsIgnoreCase(aObj.article_id);
     }
 
     public String getArticle_id() {
