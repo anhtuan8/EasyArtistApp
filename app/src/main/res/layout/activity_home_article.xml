@@ -9,31 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:paddingVertical="?attr/actionBarSize"
             android:paddingHorizontal="@dimen/activity_horizontal_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/topicTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:text="Topic Title Topic TitleTopic TitleTopic TitleTopic TitleTopic TitleTopic TitleTopic TitleTopic TitleTopic Title"
+                android:text="Topic Title"
                 android:textAppearance="@style/Title"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/articleTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:text="Article name"
                 android:textAppearance="@style/Name"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topicTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/topicTitle"
+                app:layout_constraintBottom_toTopOf="@id/imageButton"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/articleImage"
@@ -41,7 +44,17 @@
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/articleTitle" />
+                app:layout_constraintTop_toBottomOf="@id/imageButton" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toTopOf="@+id/articleImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/articleTitle"
+                app:srcCompat="@drawable/ic_star_border_black_48dp" />
 
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/articleContent"
@@ -49,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/topic_item_vertical_margin"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/articleImage" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -68,6 +81,7 @@
         layout="@layout/toolbar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

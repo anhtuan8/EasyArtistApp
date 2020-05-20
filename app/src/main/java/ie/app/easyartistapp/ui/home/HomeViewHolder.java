@@ -1,6 +1,7 @@
 package ie.app.easyartistapp.ui.home;
 
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
     private ConstraintLayout item;
     private ImageView image;
     private TextView title, description;
+    private ImageButton favoriteButton;
 
     public HomeViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -24,6 +26,7 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
         image = itemView.findViewById(R.id.image);
         title = itemView.findViewById(R.id.title);
         description = itemView.findViewById(R.id.description);
+        favoriteButton = itemView.findViewById(R.id.favoriteButton);
     }
 
     public CardView getCardView() {
@@ -46,4 +49,7 @@ public class HomeViewHolder extends RecyclerView.ViewHolder {
         return title;
     }
 
+    public ImageButton getFavoriteButton() {
+        return favoriteButton;
+    }
 }

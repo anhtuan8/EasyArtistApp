@@ -7,8 +7,9 @@ public class Article {
     private String description;
     private String detail;
     private String image_link;
+    private boolean isFavorite;
 
-    public Article(String article_id, String description, String detail, String image_link, String name, String topic_id, String topic_name){
+    public Article(String article_id, String description, String detail, String image_link, String name, String topic_id, String topic_name, boolean isFavorite){
         this.article_id = article_id;
         this.description = description;
         this.detail = detail;
@@ -16,6 +17,7 @@ public class Article {
         this.name = name;
         this.topic_id = topic_id;
         this.topic_name = topic_name;
+        this.isFavorite = isFavorite;
     }
 
     @Override
@@ -78,6 +80,14 @@ public class Article {
 
     public void setTopic_name(String topic_name) {
         this.topic_name = topic_name;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     private String name;

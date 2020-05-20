@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         Toolbar toolbar = (Toolbar)findViewById(R.id.appbar);
@@ -40,10 +42,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView,navController);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
+        if(actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
+//            actionBar.setHideOnContentScrollEnabled(true);
+        }
         Log.v("Toolbar", String.valueOf(toolbar.getMenu().size()));
     }
 

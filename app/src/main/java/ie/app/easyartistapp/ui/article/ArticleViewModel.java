@@ -6,6 +6,8 @@
 
 package ie.app.easyartistapp.ui.article;
 
+import android.app.Activity;
+import android.content.Context;
 import android.text.Html;
 import android.util.Log;
 
@@ -24,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import ie.app.easyartistapp.EasyArtistApplication;
 import ie.app.easyartistapp.entityObject.Article;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -36,21 +39,25 @@ public class ArticleViewModel extends ViewModel {
     MutableLiveData<String> topicTitle;
     MutableLiveData<String> articleImage;
     MutableLiveData<ArrayList<String>> tagNames;
+    MutableLiveData<Boolean> isFavorite;
+    Context context;
 
-    public ArticleViewModel(String articleId){
+    public ArticleViewModel(String articleId, Context context){
         articleContent = new MutableLiveData<>();
 //        articleContent.setValue("<h1>Article content</h1><p>Article content Article content Article content</p><img src=\"https://i.pinimg.com/originals/33/fc/95/33fc959336bbeec077b0f4daceffc891.jpg\"/>");
         articleTitle = new MutableLiveData<>();
         topicTitle = new MutableLiveData<>();
         articleImage = new MutableLiveData<>();
-
+        isFavorite = new MutableLiveData<>();
         tagNames = new MutableLiveData<>();
+
         ArrayList<String> tags = new ArrayList<>();
         tags.add("Renaissance");
         tags.add("Classic painting");
         tags.add("Realism");
         tagNames.setValue(tags);
         this.articleId = articleId;
+        this.context = context;
         getArticle();
     }
 
@@ -65,6 +72,10 @@ public class ArticleViewModel extends ViewModel {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Article art = document.toObject(Article.class);
+                        Activity activity = (Activity) context;
+                        EasyArtistApplication application = (EasyArtistApplication) activity.getApplication();
+                        isFavorite.setValue(application.getFavoriteList().contains(articleId));
+
                         articleContent.setValue(art.getDetail());
                         articleTitle.setValue(art.getName());
                         topicTitle.setValue(art.getTopic_name());
@@ -97,5 +108,17 @@ public class ArticleViewModel extends ViewModel {
 
     public MutableLiveData<String> getArticleImage() {
         return articleImage;
+    }
+
+    public MutableLiveData<Boolean> getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(Boolean isFavorite) {
+        this.isFavorite.setValue(isFavorite);
+    }
+
+    public String getArticleId() {
+        return articleId;
     }
 }

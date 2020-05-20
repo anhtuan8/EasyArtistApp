@@ -8,6 +8,7 @@
  */
 package ie.app.easyartistapp.ui.personal.favourite;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ie.app.easyartistapp.EasyArtistApplication;
 import ie.app.easyartistapp.entityObject.Article;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -56,50 +58,12 @@ public class FavouriteViewModel {
         articleIds = new ArrayList<>();
         this.context = context;
 
-        String favor_file = "favorite.txt";
+        Activity activityFromContext = (Activity) context;
+        EasyArtistApplication myApp = (EasyArtistApplication)activityFromContext.getApplication();
 
 //        writeToInternalFile(favor_file);
-        readFavoriteListFromInternalStorage(favor_file);
-    }
-
-    private void writeToInternalFile(String filename) throws IOException {
-        ArrayList<String> ids = new ArrayList<>();
-        FileOutputStream outputStream;
-        outputStream = context.openFileOutput(filename, Context.MODE_APPEND);
-        ids.add("WNKAhWB8Qv6iFSGMCXpd3o");
-        ids.add("fLFCaCBBoXic3uVLYDRWCc");
-        ids.add("ZjKJqCDfb3iBL8nVvforFy");
-        ids.add("NjQTiY27W4vhH59dTSDJWK");
-        ids.add("UoqmMj5vYozzpB2t8qxop3");
-        ids.add("cUbu7FesS8fLUCeauzFtFV");
-        ids.add("2UnTSJCMewxo7jf5pcnbCN");
-        ids.add("X2a4vRcLvg4UttXakRXuLe");
-        ids.add("ZjKJqCDfb3iBL8nVvforFy");
-        ids.add("7mpu84qBkRJD94uWMxPthq");
-        ids.add("5omSbA2P9HD3GBTXzTbAW3");
-        ids.add("Qduy3z2VSqLeBA4EgEQUCS");
-        ids.add("WYtgwHzdxo2JdsKoJpxPaf");
-        ids.add("NjQTiY27W4vhH59dTSDJWK");
-        for(String id : ids){
-            String string = id +"\n";
-            outputStream.write(string.getBytes());
-        }
-        outputStream.close();
-        Log.d(TAG, "writeToInternalFile: write completed");
-    }
-
-    private void readFavoriteListFromInternalStorage(String filename) throws IOException {
-        FileInputStream inputStream;
-        inputStream = context.openFileInput(filename);
-        DataInputStream in = new DataInputStream(inputStream);
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader(in));
-        String strLine;
-        //Đọc từng dòng
-        while ((strLine = br.readLine()) != null) {
-            articleIds.add(strLine);
-        }
-        in.close();
+//        readFavoriteListFromInternalStorage(myApp.getFavoriteFile());
+        articleIds = myApp.getFavoriteList();
         getFavoriteArticle();
     }
 
