@@ -1,4 +1,5 @@
 app/build.gradle
+.idea/misc.xml
 *.iml
 .gradle
 /local.properties
