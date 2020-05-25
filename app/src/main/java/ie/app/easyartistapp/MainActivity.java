@@ -1,12 +1,17 @@
 package ie.app.easyartistapp;
 
+
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import ie.app.easyartistapp.ui.camera.ContentCameraActivity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +20,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import ie.app.easyartistapp.ui.camera.ContentCameraActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -22,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.appbar_menu,menu);
         return true;
     }
+
+    FloatingActionButton camera_fab = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
         Log.v("Toolbar", String.valueOf(toolbar.getMenu().size()));
+
+        camera_fab = findViewById(R.id.camera_fab);
+        camera_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ContentCameraActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -10,4 +10,8 @@
     <string name="title_appbar_drawer">Drawer</string>
     <string name="about">About</string>
     <string name="feedback">Feedback</string>
+    <string name="content_photo_text">Take a content photo</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
