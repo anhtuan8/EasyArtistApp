@@ -30,6 +30,7 @@ public class EasyArtistApplication extends Application {
 //            writeToInternalFile(favoriteList);
             favoriteList = readFavoriteListFromInternalStorage(favoriteFile);
         } catch (IOException e) {
+            favoriteList = new ArrayList<>();
             e.printStackTrace();
         }
     }
