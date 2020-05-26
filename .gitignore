@@ -1,7 +1,5 @@
-app/build.gradle
 .idea/misc.xml
 *.iml
-.gradle
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -143,7 +141,6 @@ pip-selfcheck.json
 .idea/uiDesigner.xml
 
 # Gradle:
-.idea/gradle.xml
 .idea/libraries
 
 # Mongo Explorer plugin:
