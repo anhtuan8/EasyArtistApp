@@ -7,6 +7,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -66,7 +67,13 @@ public class EasyArtistApplication extends Application {
     private ArrayList<String> readFavoriteListFromInternalStorage(String filename) throws IOException {
         ArrayList<String> articleIds = new ArrayList<>();
         FileInputStream inputStream;
-        inputStream = this.openFileInput(filename);
+        try {
+            inputStream = this.openFileInput(filename);
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File doesn't exist");
+            return new ArrayList<String>();
+        }
         DataInputStream in = new DataInputStream(inputStream);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String strLine;
