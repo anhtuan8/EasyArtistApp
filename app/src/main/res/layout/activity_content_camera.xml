@@ -31,9 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toBottomOf="@+id/appbar"
-
-        />
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/capture_image_fab"
