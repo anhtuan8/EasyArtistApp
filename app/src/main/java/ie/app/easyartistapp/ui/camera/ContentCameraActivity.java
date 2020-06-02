@@ -25,7 +25,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Size;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -40,6 +42,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.LifecycleOwner;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.Executors;
@@ -51,6 +54,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import ie.app.easyartistapp.MainActivity;
 import ie.app.easyartistapp.R;
 
+import static androidx.camera.core.AspectRatio.RATIO_16_9;
 import static androidx.camera.core.AspectRatio.RATIO_4_3;
 
 public class ContentCameraActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
@@ -58,8 +62,12 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
     private static final String TAG = "BINDING_ERROR";
     private int CAMERA_REQUEST_CODE_PERMISSIONS = 0;
     private int GALLERY_REQUEST_CODE_PERMISSIONS = 0;
+    private int CAPTURE_REQUEST_CODE_PERMISSIONS = 0;
+
     private final String[] CAMERA_REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA"};
     private final String[] GALLERY_REQUIRED_PERMISSIONS = new String[]{"android.permission.READ_EXTERNAL_STORAGE"};
+    private final String[] CAPTURE_REQUIRED_PERMISSIONS = new String[]{"android.permission.WRITE_EXTERNAL_STORAGE"};
+
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private PreviewView previewView = null;
     private FloatingActionButton switch_camera_fab = null;
@@ -71,6 +79,7 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
     private ImageCapture imageCapture = null;
     private Camera camera = null;
     private final String ACTION_GALLERY = "ie.app.easyartistapp.ui.camera.ACTION_GALLERY";
+    private File outputDirectory = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +97,7 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        outputDirectory = this.getFilesDir();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,23 +128,11 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         capture_image_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File file = new File(Environment.getExternalStorageDirectory() + "/" + System.currentTimeMillis() + ".png");
-                ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
-                imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(),  new ImageCapture.OnImageSavedCallback(){
-                    @Override
-                    public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                       // Toast.makeText(getApplicationContext(), "Saving image", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), StyleImageActivity.class);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, file.getAbsolutePath());
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onError(@NonNull ImageCaptureException exception) {
-                        Toast.makeText(ContentCameraActivity.this, "Error in saving image", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                if (capturePermissionsGranted()){
+                    captureImage();
+                }else{
+                    ActivityCompat.requestPermissions(ContentCameraActivity.this, CAPTURE_REQUIRED_PERMISSIONS, CAPTURE_REQUEST_CODE_PERMISSIONS);
+                }
             }
         });
 
@@ -143,7 +141,6 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
             public void onClick(View v) {
                 if (galleryPermissionsGranted()){
                     accessGallery();
-
                 }else{
                     ActivityCompat.requestPermissions(ContentCameraActivity.this, GALLERY_REQUIRED_PERMISSIONS, GALLERY_REQUEST_CODE_PERMISSIONS);
                 }
@@ -181,6 +178,15 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
             }
         }
 
+        else if(requestCode == CAPTURE_REQUEST_CODE_PERMISSIONS) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                captureImage();
+            } else {
+                // Permission request was denied.
+                Toast.makeText(this, "Storage Access Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+
 
         // END_INCLUDE(onRequestPermissionsResult)
     }
@@ -215,6 +221,36 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         }
     }
 
+    void captureImage(){
+        //File file = new File(outputDirectory, System.currentTimeMillis() + ".png");
+        File mImageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "picture");
+        boolean isDirectoryCreated = mImageDir.exists() || mImageDir.mkdirs();
+        //Log.d("File", file.toString());
+        if(isDirectoryCreated) {
+
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picture", System.currentTimeMillis() + ".jpg");
+            ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
+            imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(ContentCameraActivity.this), new ImageCapture.OnImageSavedCallback() {
+                @Override
+                public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                    Toast.makeText(ContentCameraActivity.this, "Success in saving image", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getApplicationContext(), "Saving image", Toast.LENGTH_SHORT).show();
+                    //Uri saved_uri = outputFileResults.getSavedUri();
+                    //String filePath = Uri.fromFile(file).toString();
+                    Intent intent = new Intent(getApplicationContext(), StyleImageActivity.class);
+                    intent.putExtra("UUID", "CAMERA");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, file.getPath());
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onError(@NonNull ImageCaptureException exception) {
+                    Toast.makeText(ContentCameraActivity.this, "Error in saving image", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     void accessGallery(){
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE_PERMISSIONS);
@@ -236,12 +272,14 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
 
     void bindCameraUseCases() {
 
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int height = dm.heightPixels;
+        int width = dm.widthPixels;
         //int rotation = previewView.getDisplay().getRotation();
         previewView.setPreferredImplementationMode(PreviewView.ImplementationMode.SURFACE_VIEW);
-        Preview preview = new Preview.Builder().setTargetAspectRatio(RATIO_4_3).build();
+        Preview preview = new Preview.Builder().setTargetResolution(new Size(width, width)).build();
         imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                                .setTargetRotation(getWindowManager().getDefaultDisplay().getRotation())
-                                .setTargetAspectRatio(RATIO_4_3).build();
+                                .setTargetResolution(new Size(width, width)).build();
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(lensFacing)
                 .build();
@@ -249,7 +287,7 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         cameraProvider.unbindAll();
         try{
             camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview, imageCapture);
-            preview.setSurfaceProvider(previewView.createSurfaceProvider(camera.getCameraInfo()));
+            preview.setSurfaceProvider(previewView.createSurfaceProvider());
         }catch(IllegalStateException ill){
             Log.e(TAG, "Use case binding failed ", ill);
         }
@@ -264,6 +302,15 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         }
         return true;
    }
+
+    private Boolean capturePermissionsGranted(){
+        for(String permission: CAPTURE_REQUIRED_PERMISSIONS){
+            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED){
+                return false;
+            }
+        }
+        return true;
+    }
 
     private Boolean galleryPermissionsGranted(){
         for(String permission: GALLERY_REQUIRED_PERMISSIONS){
