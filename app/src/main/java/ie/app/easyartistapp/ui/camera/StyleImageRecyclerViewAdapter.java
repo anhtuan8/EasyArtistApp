@@ -25,11 +25,13 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private Context mContext;
+    private OnStyleImageListener mOnStyleImageListener;
 
-    public StyleImageRecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> imageUrls){
+    public StyleImageRecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> imageUrls, OnStyleImageListener onStyleImageListener){
        // mNames = names;
         mImageUrls = imageUrls;
         mContext = context;
+        this.mOnStyleImageListener = onStyleImageListener;
 
     }
     @Override
@@ -43,24 +45,26 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
 
       //  holder.name.setText(mNames.get(position));
 
-        holder.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.d(TAG, "onClick: clicked on an image: " + mNames.get(position));
-                //holder.image.setBorderColor();
-               // holder.image.setBorderWidth(2);
-                holder.image.setBorderWidth(5);
-                holder.image.setBorderOverlay(true);
-               // Toast.makeText(mContext, mNames.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        holder.image.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Log.d(TAG, "onClick: clicked on an image: " + mNames.get(position));
+//                //holder.image.setBorderColor();
+//               // holder.image.setBorderWidth(2);
+//                holder.image.setBorderWidth(5);
+//                holder.image.setBorderOverlay(true);
+//               // Toast.makeText(mContext, mNames.get(position), Toast.LENGTH_SHORT).show();
+//
+//
+//            }
+//        });
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_styleimageslist, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mOnStyleImageListener);
     }
 
     @Override
@@ -68,16 +72,27 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
         return mImageUrls.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         CircleImageView image;
+        OnStyleImageListener onStyleImageListener;
        // TextView name;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView, OnStyleImageListener onStyleImageListener){
             super(itemView);
             image = itemView.findViewById(R.id.style_image_view);
+            itemView.setOnClickListener(this);
+            this.onStyleImageListener = onStyleImageListener;
           //  name = itemView.findViewById(R.id.name);
         }
 
+        @Override
+        public void onClick(View v) {
+            onStyleImageListener.onStyleImageClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnStyleImageListener{
+        void onStyleImageClick(int position);
     }
 }

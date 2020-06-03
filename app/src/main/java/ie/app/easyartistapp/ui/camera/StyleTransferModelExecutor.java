@@ -1,3 +1,5 @@
+package ie.app.easyartistapp.ui.camera;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;

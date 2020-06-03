@@ -1,24 +1,38 @@
 package ie.app.easyartistapp.ui.camera;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import ie.app.easyartistapp.R;
 
-public class StyleImageActivity extends AppCompatActivity{
+public class StyleImageActivity extends AppCompatActivity implements StyleImageRecyclerViewAdapter.OnStyleImageListener, LoaderManager.LoaderCallbacks<Bitmap> {
+
+
 
     private ImageView imageView = null;
     private TextView content_caption_view = null;
@@ -26,6 +40,8 @@ public class StyleImageActivity extends AppCompatActivity{
     private static final String TAG = "MainActivity";
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private String contentImagePath = null;
+    private String styleImagePath = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +53,7 @@ public class StyleImageActivity extends AppCompatActivity{
             String uuid = intent.getExtras().getString("UUID");
             if (uuid.equals(ACTION_GALLERY)) {
                 String picturePath = intent.getExtras().getString(MediaStore.EXTRA_OUTPUT);
+                contentImagePath = picturePath;
                 imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
             } else {
                 String picturePath = intent.getExtras().getString(MediaStore.EXTRA_OUTPUT);
@@ -44,7 +61,6 @@ public class StyleImageActivity extends AppCompatActivity{
                 imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
             }
         }
-
         getImages();
     }
 
@@ -87,8 +103,36 @@ public class StyleImageActivity extends AppCompatActivity{
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.style_image_recycler);
         recyclerView.setLayoutManager(layoutManager);
-        StyleImageRecyclerViewAdapter adapter = new StyleImageRecyclerViewAdapter(this, mNames, mImageUrls);
+        StyleImageRecyclerViewAdapter adapter = new StyleImageRecyclerViewAdapter(this, mNames, mImageUrls, this::onStyleImageClick);
         recyclerView.setAdapter(adapter);
     }
 
- }
+    @Override
+    public void onStyleImageClick(int position) {
+        styleImagePath = mImageUrls.get(position);
+        Log.d(TAG, "onStyleClick: clicked.");
+        if (getSupportLoaderManager().getLoader(0) != null) {
+            getSupportLoaderManager().initLoader(0, null, this);
+        }
+    }
+
+    @NonNull
+    @Override
+    public Loader<Bitmap> onCreateLoader(int id, @Nullable Bundle args) {
+        return new MLExecutionLoader(StyleImageActivity.this, contentImagePath, styleImagePath, StyleImageActivity.this);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Bitmap> loader, Bitmap data) {
+        imageView.setImageBitmap(data);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Bitmap> loader) {
+
+    }
+
+
+
+
+}
