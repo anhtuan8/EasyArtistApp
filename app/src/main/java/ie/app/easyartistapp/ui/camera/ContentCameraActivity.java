@@ -277,6 +277,8 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         int width = dm.widthPixels;
         //int rotation = previewView.getDisplay().getRotation();
         previewView.setPreferredImplementationMode(PreviewView.ImplementationMode.SURFACE_VIEW);
+        Log.d("WIDTH", Integer.toString(width));
+        Log.d("HEIGHT", Integer.toString(height));
         Preview preview = new Preview.Builder().setTargetResolution(new Size(width, width)).build();
         imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                                 .setTargetResolution(new Size(width, width)).build();
