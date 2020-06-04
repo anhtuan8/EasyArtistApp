@@ -10,5 +10,9 @@
     <string name="title_appbar_drawer">Drawer</string>
     <string name="about">About</string>
     <string name="feedback">Feedback</string>
+    <string name="topic">Topics</string>
     <string name="favorite_content_description">Add to favorite</string>
+    <string name="nav_header_desc">avatar</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
 </resources>

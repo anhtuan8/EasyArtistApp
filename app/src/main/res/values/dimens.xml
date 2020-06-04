@@ -11,4 +11,8 @@
     <dimen name="favourite_itemHeight">60dp</dimen>
     <dimen name="favourite_item_padding">10dp</dimen>
     <dimen name="article_tag_horizontal_margin">2dp</dimen>
+    <dimen name="navigation_header_height">160dp</dimen>
+    <dimen name="navigation_item_height">48dp</dimen>
+    <dimen name="navigation_item_icon_size">24dp</dimen>
+    <dimen name="navigation_header_vertical_spacing">8dp</dimen>
 </resources>
