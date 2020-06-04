@@ -26,15 +26,16 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
+
         forceLoad();
     }
 
-    public MLExecutionLoader(@NonNull Context context, String contentPath, String stylePath, Activity activity ) {
+    public MLExecutionLoader(@NonNull Context context, String contentPath, String stylePath) {
         super(context);
         mcontentPath = contentPath;
-        mstylePath = getImgCachePath(stylePath);
+        mstylePath = stylePath;
         try {
-            styleTransferModelExecutor = new StyleTransferModelExecutor(activity, StyleTransferModelExecutor.Device.CPU);
+            styleTransferModelExecutor = new StyleTransferModelExecutor((Activity) context, StyleTransferModelExecutor.Device.CPU);
         }catch (IOException io){
             Log.d(TAG, "IO File");
         }
@@ -44,7 +45,8 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
     @Nullable
     @Override
     public Bitmap loadInBackground() {
-        Bitmap bitmap = styleTransferModelExecutor.execute(mcontentPath,mstylePath, getContext());
+        String realPath = getImgCachePath(mstylePath);
+        Bitmap bitmap = styleTransferModelExecutor.execute(mcontentPath,realPath, getContext());
         return bitmap;
     }
 

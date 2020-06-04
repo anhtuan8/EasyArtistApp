@@ -19,10 +19,14 @@ import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp;
 import org.tensorflow.lite.support.image.ops.Rot90Op;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
+import java.nio.channels.Channel;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -89,6 +93,8 @@ public class StyleTransferModelExecutor {
     public Bitmap execute(String contentImagePath, String styleImagePath, Context context){
         try{
             Log.i(TAG, "running models");
+            Log.d(TAG, styleImagePath.toString());
+            Log.d(TAG, contentImagePath.toString());
             Bitmap contentBitmap = BitmapFactory.decodeFile(contentImagePath);
             Bitmap styleBitmap = BitmapFactory.decodeFile(styleImagePath);
 
@@ -98,10 +104,10 @@ public class StyleTransferModelExecutor {
             DataType outputPredictDatatype = interpreterPredict.getOutputTensor(0).dataType();
             int[] styleBottleneckShape = interpreterPredict.getOutputTensor(0).shape();
 
-            TensorBuffer styleBottleneckBuffer  = TensorBuffer.createFixedSize(styleBottleneckShape,outputPredictDatatype);
-            interpreterPredict.run(contentTensor.getBuffer(), styleBottleneckBuffer.getBuffer());
+            TensorBuffer styleBottleneckBuffer  = TensorBuffer.createFixedSize(styleBottleneckShape, outputPredictDatatype);
+            interpreterPredict.run(styleTensor.getBuffer(), styleBottleneckBuffer.getBuffer());
 
-            ByteBuffer[] inputsForStyleTransfer = new ByteBuffer[]{styleTensor.getBuffer(), styleBottleneckBuffer.getBuffer()};
+            ByteBuffer[] inputsForStyleTransfer = new ByteBuffer[]{contentTensor.getBuffer(), styleBottleneckBuffer.getBuffer()};
 
 //            int[] outputStyleShape = interpreterTransform.getOutputTensor(0).shape();
 //            DataType outputStyleDatatype = interpreterPredict.getOutputTensor(0).dataType();
@@ -150,7 +156,7 @@ public class StyleTransferModelExecutor {
         if(device == Device.GPU){
             tImage = new TensorImage(DataType.FLOAT32);
         }else{
-            tImage = new TensorImage(DataType.UINT8);
+            tImage = new TensorImage(DataType.FLOAT32);
         }
 
         tImage.load(bitmap);
@@ -175,5 +181,16 @@ public class StyleTransferModelExecutor {
         }
         return styledImage;
     }
+
+//    private MappedByteBuffer loadModelFile(Context context , String modelFile) {
+//        FileDescriptor fileDescriptor = context.assets.openFd(modelFile);
+//        FileInputStream inputStream = new FileInputStream(fileDescriptor.fileDescriptor);
+//        Channel fileChannel = inputStream.getChannel();
+//        val startOffset = fileDescriptor.
+//        val declaredLength = fileDescriptor.declaredLength
+//        val retFile = fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
+//        fileDescriptor.close()
+//        return retFile
+//    }
 
 }

@@ -33,7 +33,7 @@ import ie.app.easyartistapp.R;
 public class StyleImageActivity extends AppCompatActivity implements StyleImageRecyclerViewAdapter.OnStyleImageListener, LoaderManager.LoaderCallbacks<Bitmap> {
 
 
-
+    private static final String LOG = "CONTENT_PATH";
     private ImageView imageView = null;
     private TextView content_caption_view = null;
     private final String ACTION_GALLERY = "ie.app.easyartistapp.ui.camera.ACTION_GALLERY";
@@ -58,10 +58,20 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
             } else {
                 String picturePath = intent.getExtras().getString(MediaStore.EXTRA_OUTPUT);
                 Log.d("Picture", picturePath);
+                contentImagePath = picturePath;
                 imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
             }
+
         }
         getImages();
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString("contentPath", contentImagePath);
+        queryBundle.putString("stylePath", styleImagePath);
+        if(getSupportLoaderManager().getLoader(0) != null) {
+            getSupportLoaderManager().initLoader(0, queryBundle, this);
+        }
+
+
     }
 
     private void getImages() {
@@ -103,23 +113,34 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.style_image_recycler);
         recyclerView.setLayoutManager(layoutManager);
-        StyleImageRecyclerViewAdapter adapter = new StyleImageRecyclerViewAdapter(this, mNames, mImageUrls, this::onStyleImageClick);
+        StyleImageRecyclerViewAdapter adapter = new StyleImageRecyclerViewAdapter(this, mNames, mImageUrls, contentImagePath, this::onStyleImageClick);
         recyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void onStyleImageClick(int position) {
+    public void onStyleImageClick(int position, String contentPath) {
         styleImagePath = mImageUrls.get(position);
+        contentImagePath =  contentPath;
         Log.d(TAG, "onStyleClick: clicked.");
-        if (getSupportLoaderManager().getLoader(0) != null) {
-            getSupportLoaderManager().initLoader(0, null, this);
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString("content_url", contentImagePath);
+        queryBundle.putString("style_url", styleImagePath);
+        if(getSupportLoaderManager().getLoader(0) == null){
+            Log.d("BEFORE_INFER", contentImagePath);
+            Log.d("BEFORE_INFER", styleImagePath);
+            getSupportLoaderManager().initLoader(0, queryBundle, this);
+        }else{
+            Log.d("BEFORE_INFER_N", contentImagePath);
+            Log.d("BEFORE_INFER_N", styleImagePath);
+            getSupportLoaderManager().restartLoader(0, queryBundle, this);
         }
+
     }
 
     @NonNull
     @Override
     public Loader<Bitmap> onCreateLoader(int id, @Nullable Bundle args) {
-        return new MLExecutionLoader(StyleImageActivity.this, contentImagePath, styleImagePath, StyleImageActivity.this);
+        return new MLExecutionLoader(StyleImageActivity.this, contentImagePath, styleImagePath);
     }
 
     @Override

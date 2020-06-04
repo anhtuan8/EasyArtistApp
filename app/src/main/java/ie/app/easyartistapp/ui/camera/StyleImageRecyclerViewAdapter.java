@@ -25,12 +25,14 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private Context mContext;
+    private String contentPath = null;
     private OnStyleImageListener mOnStyleImageListener;
 
-    public StyleImageRecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> imageUrls, OnStyleImageListener onStyleImageListener){
+    public StyleImageRecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> imageUrls, String contentPath, OnStyleImageListener onStyleImageListener){
        // mNames = names;
         mImageUrls = imageUrls;
         mContext = context;
+        this.contentPath = contentPath;
         this.mOnStyleImageListener = onStyleImageListener;
 
     }
@@ -88,11 +90,11 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
 
         @Override
         public void onClick(View v) {
-            onStyleImageListener.onStyleImageClick(getAdapterPosition());
+            onStyleImageListener.onStyleImageClick(getAdapterPosition(), contentPath);
         }
     }
 
     public interface OnStyleImageListener{
-        void onStyleImageClick(int position);
+        void onStyleImageClick(int position, String contentPath);
     }
 }
