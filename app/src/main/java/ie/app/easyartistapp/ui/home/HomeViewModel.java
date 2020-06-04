@@ -16,4 +16,13 @@ public class HomeViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
+
+    public class TopicItem{
+        String topicImage, topicTitle, topicDescription;
+        public TopicItem(String image, String title, String description){
+            this.topicDescription = description;
+            this.topicTitle = title;
+            this.topicImage = image;
+        }
+    }
 }

@@ -8,18 +8,19 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="ie.app.easyartistapp.ui.home.HomeFragment"
-        android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
+<!--        android:label="@string/title_home"-->
+
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_camera"
         android:name="ie.app.easyartistapp.ui.camera.CameraFragment"
-        android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_camera" />
+<!--        android:label="@string/title_camera"-->
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_personal"
         android:name="ie.app.easyartistapp.ui.personal.PersonalFragment"
-        android:label="@string/title_notifications"
         tools:layout="@layout/fragment_personal" />
+<!--    android:label="@string/title_personal"-->
 </navigation>
