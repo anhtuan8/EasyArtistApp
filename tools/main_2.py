@@ -74,6 +74,16 @@ class DatabaseManager:
         blob.make_public()
         return blob.public_url
 
+    def _take_text_from_files(self, file_path : str) -> str:
+        """Take text from file and save to string
+        params:
+        file_path: path to file
+        return:
+        str: string contains content of target file
+        """
+        with open(file_path, 'r') as f:
+            return f.read()
+
     def create_articles(self, topic_folder, topic_id, topic_name):
         """Create article collection"""
         article_names = [f for f in os.listdir(topic_folder) if os.path.isdir(os.path.join(topic_folder, f))]
@@ -86,16 +96,16 @@ class DatabaseManager:
             except:
                 print('Article: ',  article_folder)
                 raise Exception("Error")
-            desc_link = self._upload_blob(str(desc_path), False)
-            detail_link = self._upload_blob(str(detail_path), False)
+            desc_string = self._take_text_from_files(desc_path)
+            detail_string = self._take_text_from_files(detail_path)
             image_link = self._upload_blob(str(image_path), True)
             article_id = shortuuid.uuid()
 
             article_doc = {
                 'article_id': article_id,
                 'name': article_name,
-                'description': desc_link,
-                'detail': detail_link,
+                'description': desc_string,
+                'detail': detail_string,
                 'topic_id': topic_id,
                 'image_link': image_link,
                 'topic_name': topic_name
@@ -139,4 +149,4 @@ if __name__ == '__main__':
     # print(filename)
     databaseManager.upload_data(source_path)
     #find_all_empty_files(source_path)
-
+    #print(databaseManager._take_text_from_file('/home/love_you/Documents/Study/Mobile/EasyArtists/contents/Artists/Michelangelo/artist_info.txt'))
