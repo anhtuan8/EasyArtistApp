@@ -4,6 +4,9 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+    aaptOptions {
+        noCompress "tflite"
+    }
 
     defaultConfig {
         applicationId "com.example.easyartistapp"
@@ -27,6 +30,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    def tfl_version = "0.0.0-nightly"
+    def glide_version = "4.9.0"
+    def camerax_version = "1.0.0-beta04"
+
     implementation 'androidx.appcompat:appcompat:1.1.0'
     //android support design
     implementation 'com.google.android.material:material:1.1.0'
@@ -41,16 +48,54 @@ dependencies {
     //glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.google.firebase:firebase-database:19.3.0'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     //HtmlTextView
     implementation 'org.sufficientlysecure:html-textview:3.9'
     //android support
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
+
+    //testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //viewpager2
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
+    //  androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.navigation:navigation-runtime:2.2.2'
+// CameraX core library using camera2 implementation
+    //noinspection GradleDependency
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+// CameraX Lifecycle Library
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+// CameraX View class
+    implementation "androidx.camera:camera-view:1.0.0-alpha11"
+
+    implementation "org.tensorflow:tensorflow-lite:${tfl_version}"
+    implementation "org.tensorflow:tensorflow-lite-gpu:${tfl_version}"
+    //CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'org.tensorflow:tensorflow-lite-support:0.0.0-nightly'
+}
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://maven.google.com' }
+        mavenCentral()
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://maven.google.com' }
+
+    }
 }
