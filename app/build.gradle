@@ -39,7 +39,12 @@ dependencies {
     def camerax_version = "1.0.0-beta06"
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
+<<<<<<< HEAD
     //android support design
+=======
+<<<<<<< HEAD
+
+>>>>>>> camera-design-layout
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.navigation:navigation-fragment:2.3.0'
@@ -47,12 +52,24 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+<<<<<<< HEAD
+=======
+=======
+    //android support design
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.navigation:navigation-fragment:2.2.2'
+    implementation 'androidx.navigation:navigation-ui:2.2.2'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+>>>>>>> remotes/origin/layout-tuan
+>>>>>>> camera-design-layout
     //recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     //cardview
     implementation 'androidx.cardview:cardview:1.0.0'
     //glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+<<<<<<< HEAD
     //gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
@@ -73,6 +90,20 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.4.0'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.google.firebase:firebase-database:19.3.0'
+=======
+<<<<<<< HEAD
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    //implementation 'com.google.firebase:firebase-auth:19.3.1'
+    //implementation 'com.google.firebase:firebase-admin:6.14.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    //HtmlTextView
+    implementation 'org.sufficientlysecure:html-textview:3.9'
+
+    //testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+>>>>>>> camera-design-layout
     //  androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.navigation:navigation-runtime:2.2.2'
 // CameraX core library using camera2 implementation
@@ -111,4 +142,22 @@ allprojects {
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
     }
+<<<<<<< HEAD
+=======
+=======
+    implementation 'com.google.firebase:firebase-database:19.3.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    //HtmlTextView
+    implementation 'org.sufficientlysecure:html-textview:3.9'
+    //android support
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //viewpager2
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
+>>>>>>> remotes/origin/layout-tuan
+>>>>>>> camera-design-layout
 }

@@ -1,21 +1,59 @@
 {
   "project_info": {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> camera-design-layout
     "project_number": "699791097693",
     "firebase_url": "https://easy-artist-281701.firebaseio.com",
     "project_id": "easy-artist-281701",
     "storage_bucket": "easy-artist-281701.appspot.com"
+<<<<<<< HEAD
+=======
+=======
+    "project_number": "1087853268612",
+    "firebase_url": "https://easy-artist-60842.firebaseio.com",
+    "project_id": "easy-artist-60842",
+    "storage_bucket": "easy-artist-60842.appspot.com"
+>>>>>>> remotes/origin/layout-tuan
+>>>>>>> camera-design-layout
   },
   "client": [
     {
       "client_info": {
+<<<<<<< HEAD
         "mobilesdk_app_id": "1:699791097693:android:ba2d78fbf2f1e717fd32b4",
+=======
+<<<<<<< HEAD
+        "mobilesdk_app_id": "1:699791097693:android:1806c21a4c0e1059fd32b4",
+=======
+        "mobilesdk_app_id": "1:1087853268612:android:4af9a29b1507a28ef37cd1",
+>>>>>>> remotes/origin/layout-tuan
+>>>>>>> camera-design-layout
         "android_client_info": {
           "package_name": "com.example.easyartistapp"
         }
       },
       "oauth_client": [
         {
+<<<<<<< HEAD
           "client_id": "699791097693-nhncds2d44297rmpamsjj1jvd3i3tif7.apps.googleusercontent.com",
+=======
+<<<<<<< HEAD
+          "client_id": "699791097693-uopcc0h1hch4ulcdhgt33ldts55mqs57.apps.googleusercontent.com",
+>>>>>>> camera-design-layout
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.easyartistapp",
+            "certificate_hash": "168a62e93c51ab8176be1b2af82ec8d227b9a850"
+          }
+        },
+        {
+          "client_id": "699791097693-sju8489i6js81siu9fv7khekt5trnu0f.apps.googleusercontent.com",
+<<<<<<< HEAD
+=======
+=======
+          "client_id": "1087853268612-gqg9dbq65imds6gb5lk49oglffcstjtt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.easyartistapp",
@@ -23,20 +61,37 @@
           }
         },
         {
-          "client_id": "699791097693-sju8489i6js81siu9fv7khekt5trnu0f.apps.googleusercontent.com",
+          "client_id": "1087853268612-k1te60rag7s75ms3h5mts35bfp033nsq.apps.googleusercontent.com",
+>>>>>>> remotes/origin/layout-tuan
+>>>>>>> camera-design-layout
           "client_type": 3
         }
       ],
       "api_key": [
         {
+<<<<<<< HEAD
           "current_key": "AIzaSyCtwaW0IwDxATXoP1JJqJyuIZWW6i4arFs"
+=======
+<<<<<<< HEAD
+          "current_key": "AIzaSyCtwaW0IwDxATXoP1JJqJyuIZWW6i4arFs"
+=======
+          "current_key": "AIzaSyDAb4r5RaTbWOnGacr7a6FV_wJmvOnDZxk"
+>>>>>>> remotes/origin/layout-tuan
+>>>>>>> camera-design-layout
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
+<<<<<<< HEAD
               "client_id": "699791097693-sju8489i6js81siu9fv7khekt5trnu0f.apps.googleusercontent.com",
+=======
+<<<<<<< HEAD
+              "client_id": "699791097693-sju8489i6js81siu9fv7khekt5trnu0f.apps.googleusercontent.com",
+=======
+              "client_id": "1087853268612-k1te60rag7s75ms3h5mts35bfp033nsq.apps.googleusercontent.com",
+>>>>>>> camera-design-layout
               "client_type": 3
             }
           ]
@@ -65,7 +120,12 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
+<<<<<<< HEAD
               "client_id": "699791097693-sju8489i6js81siu9fv7khekt5trnu0f.apps.googleusercontent.com",
+=======
+              "client_id": "1087853268612-k1te60rag7s75ms3h5mts35bfp033nsq.apps.googleusercontent.com",
+>>>>>>> remotes/origin/layout-tuan
+>>>>>>> camera-design-layout
               "client_type": 3
             }
           ]
