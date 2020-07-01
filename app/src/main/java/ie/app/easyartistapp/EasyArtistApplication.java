@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,6 +21,7 @@ public class EasyArtistApplication extends Application {
 
     private ArrayList<String> favoriteList;
     private String favoriteFile;
+    private ArrayList<File> savedFiles;
 
     @Override
     public void onCreate() {
@@ -93,4 +95,6 @@ public class EasyArtistApplication extends Application {
     public ArrayList<String> getFavoriteList() {
         return favoriteList;
     }
+
+
 }

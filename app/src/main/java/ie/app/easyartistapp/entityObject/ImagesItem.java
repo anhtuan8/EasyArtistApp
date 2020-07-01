@@ -14,7 +14,7 @@ public class ImagesItem{
 	private String title;
 
 	@SerializedName("image_url")
-	private String image_url = null;
+	private String image_url;
 
 	public void setAuthor(String author){
 		this.author = author;

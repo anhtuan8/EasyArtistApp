@@ -88,8 +88,10 @@ dependencies {
     //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.facebook.android:facebook-share:5.15.3'
-
     implementation 'org.tensorflow:tensorflow-lite-support:0.0.0-nightly'
+    implementation 'com.github.javiersantos:MaterialStyledDialogs:3.0.1'
+
+
 }
 
 buildscript {
@@ -97,6 +99,7 @@ buildscript {
         google()
         jcenter()
         maven { url 'https://maven.google.com' }
+
         mavenCentral()
     }
 }
@@ -106,6 +109,6 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://maven.google.com' }
-
+        maven { url "https://jitpack.io" }
     }
 }

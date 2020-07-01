@@ -19,6 +19,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ie.app.easyartistapp.R;
+import ie.app.easyartistapp.entityObject.ImagesItem;
 
 public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleImageRecyclerViewAdapter.ViewHolder> {
 
@@ -28,17 +29,17 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
     private Context mContext;
     private OnStyleImageListener mOnStyleImageListener;
     private int lastItemChosen = -1;
+    private List<ImagesItem>imageItems = null;
 
-    public StyleImageRecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> imageUrls, OnStyleImageListener onStyleImageListener){
-       // mNames = names;
-        mImageUrls = imageUrls;
+    public StyleImageRecyclerViewAdapter(Context context, List<ImagesItem> imagesItemlist, OnStyleImageListener onStyleImageListener){
+        imageItems = imagesItemlist;
         mContext = context;
         this.mOnStyleImageListener = onStyleImageListener;
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: called.");
-        Uri filepath = Uri.parse("file:///android_asset/thumbnails/" + mImageUrls.get(position));
+        Uri filepath = Uri.parse("file:///android_asset/thumbnails/" + imageItems.get(position).getImage_url());
         Glide.with(mContext)
                 .asBitmap()
                 .load(filepath)
@@ -75,7 +76,7 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
 
     @Override
     public int getItemCount() {
-        return mImageUrls.size();
+        return imageItems.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -104,7 +105,7 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
 //                notifyItemChanged(getAdapterPosition(), null);
 //            }
 
-            for (int i=0; i <= mImageUrls.size(); i++){
+            for (int i=0; i <= imageItems.size(); i++){
                 if (i != getAdapterPosition()){
                     notifyItemChanged(i, null);
                 }

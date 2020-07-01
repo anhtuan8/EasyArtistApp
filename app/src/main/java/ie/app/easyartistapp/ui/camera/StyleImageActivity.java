@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -34,6 +36,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -42,6 +46,8 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -53,6 +59,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import ie.app.easyartistapp.EasyArtistApplication;
+import ie.app.easyartistapp.MainActivity;
 import ie.app.easyartistapp.R;
 import ie.app.easyartistapp.entityObject.ImagesItem;
 import ie.app.easyartistapp.entityObject.StyleImageObjects;
@@ -73,6 +81,9 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
     private ProgressBar progressBar = null;
     private StyleImageObjects imageObject = null;
     private List<ImagesItem>  imageItems = null;
+    private Button detailButton = null;
+    private int currentPosition = -1;
+    private String stylePath = null;
 //    private FrameLayout constraintLayout = null;
 //    private ShareDialog shareDialog = null;
 //    private CallbackManager callbackManager = null;
@@ -85,37 +96,31 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
         imageView = findViewById(R.id.imageView);
         content_caption_view = findViewById(R.id.content_text);
         progressBar = findViewById(R.id.progress_bar);
+        detailButton = findViewById(R.id.textButton);
+        //load style image info from file
         Gson gson = new Gson();
         String imageJson = loadJSONFromAsset();
+        Log.d("imageJson", imageJson);
         imageObject = gson.fromJson(imageJson, StyleImageObjects.class);
         imageItems = imageObject.getImages();
+        // setup action bar
         androidx.appcompat.widget.Toolbar toolbar = (Toolbar) findViewById(R.id.style_toolbar);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-//        callbackManager = CallbackManager.Factory.create();
-//        shareDialog = new ShareDialog(this);
-//        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-//            @Override
-//            public void onSuccess(Sharer.Result result) {
-//                Log.d("Facebook", "Sucesss");
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                Log.d("Facebook", "Cancel");
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//                Log.d("Facebook", "Error");
-//            }
-//        });
-       // shareButton = (ShareButton)findViewById(R.id.fb_share_button);
 
+        detailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String imagePath = imageItems.get(currentPosition).getImage_url();
+                stylePath = "//android_asset/" + "thumbnails/" + imagePath;
+
+
+
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +128,7 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
                 finish();
             }
         });
+
         Intent intent = getIntent();
         if (intent != null) {
             String uuid = intent.getExtras().getString("UUID");
@@ -140,7 +146,7 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
             }
 
         }
-        getImages();
+        initRecyclerView();
         Bundle queryBundle = new Bundle();
         queryBundle.putString("contentPath", contentImagePath);
         queryBundle.putString("stylePath", styleImagePath);
@@ -211,13 +217,12 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
 //
 //        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
 //        mNames.add("Washington");
-        try{
-            ArrayList<String> mImageUrls = new ArrayList<String>(Arrays.asList(getApplicationContext().getAssets().list("thumbnails")));
-            for
-            Log.d("STYLE_IMAGE", mImageUrls.get(0));
-        }catch (IOException ioError){
-            Log.d("Activity: StyleImageActivity:", ioError.toString());
-        }
+//        try{
+//            ArrayList<String> mImageUrls = new ArrayList<String>(Arrays.asList(getApplicationContext().getAssets().list("thumbnails")));
+//            Log.d("STYLE_IMAGE", mImageUrls.get(0));
+//        }catch (IOException ioError){
+//            Log.d("Activity: StyleImageActivity:", ioError.toString());
+//        }
 
         initRecyclerView();
     }
@@ -229,19 +234,23 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.style_image_recycler);
         recyclerView.setLayoutManager(layoutManager);
-        StyleImageRecyclerViewAdapter adapter = new StyleImageRecyclerViewAdapter(this, mNames, mImageUrls, this::onStyleImageClick);
+        StyleImageRecyclerViewAdapter adapter = new StyleImageRecyclerViewAdapter(this, imageItems, this::onStyleImageClick);
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onStyleImageClick(int position) {
-        styleImagePath = mImageUrls.get(position);
+        styleImagePath = imageItems.get(position).getImage_url();
         Log.d(TAG, "onStyleClick: clicked.");
         Bundle queryBundle = new Bundle();
         progressBar.setVisibility(View.VISIBLE);
         imageView.setAlpha((float) 0.4);
+        content_caption_view.setVisibility(View.GONE);
+        detailButton.setVisibility(View.VISIBLE);
+        detailButton.setText(imageItems.get(position).getTitle());
         queryBundle.putString("content_url", contentImagePath);
         queryBundle.putString("style_url", styleImagePath);
+        currentPosition = position;
         
         if(getSupportLoaderManager().getLoader(0) == null){
 
