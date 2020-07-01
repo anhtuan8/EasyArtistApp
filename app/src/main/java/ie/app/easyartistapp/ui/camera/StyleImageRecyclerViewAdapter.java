@@ -27,6 +27,7 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private Context mContext;
     private OnStyleImageListener mOnStyleImageListener;
+    private int lastItemChosen = -1;
 
     public StyleImageRecyclerViewAdapter(Context context, ArrayList<String> names, ArrayList<String> imageUrls, OnStyleImageListener onStyleImageListener){
        // mNames = names;
@@ -42,6 +43,11 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
                 .asBitmap()
                 .load(filepath)
                 .into(holder.image);
+
+
+        //if(poststyleChooseIndex )
+        holder.image.setBorderOverlay(false);
+        holder.image.setBorderWidth(0);
 
       //  holder.name.setText(mNames.get(position));
 
@@ -88,6 +94,23 @@ public class StyleImageRecyclerViewAdapter extends RecyclerView.Adapter<StyleIma
 
         @Override
         public void onClick(View v) {
+
+            image.setBorderOverlay(true);
+            image.setBorderWidth(10);
+
+//            lastItemChosen = getAdapterPosition();
+//            if(lastItemChosen != -1 || lastItemChosen != getAdapterPosition() ){
+//                notifyItemChanged(lastItemChosen, null);
+//                notifyItemChanged(getAdapterPosition(), null);
+//            }
+
+            for (int i=0; i <= mImageUrls.size(); i++){
+                if (i != getAdapterPosition()){
+                    notifyItemChanged(i, null);
+                }
+
+            }
+            //image.setBorderColor();
             onStyleImageListener.onStyleImageClick(getAdapterPosition());
         }
     }

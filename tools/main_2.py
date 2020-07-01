@@ -52,10 +52,12 @@ def find_all_empty_files(folder_path):
 
 
 class DatabaseManager:
-    def __init__(self, bucket_name='easy-artist-60842.appspot.com',
-                 path_to_key='easy-artist-60842-firebase-adminsdk-hits5-63e86fc81d.json'):
+    def __init__(self, bucket_name='easy-artist-281701.appspot.com',
+                 path_to_key='/home/love_you/Documents/Study/Mobile/EasyArtists/tools/easy-artist-281701-firebase-adminsdk-8gndy-48b6362aa5.json'):
         cred = credentials.Certificate(path_to_key)
-        default_app = firebase_admin.initialize_app(cred)
+        firebase_admin.initialize_app(cred, {
+            'databaseURL': 'https://easy-artist-281701.firebaseio.com'
+        })
         self.db = firestore.client()
         self.bucket = storage.bucket(bucket_name)
 

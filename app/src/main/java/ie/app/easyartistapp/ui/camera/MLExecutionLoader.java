@@ -1,13 +1,18 @@
 package ie.app.easyartistapp.ui.camera;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +56,10 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
         Bitmap bitmap = styleTransferModelExecutor.execute(mcontentPath, mstylePath, getContext());
         return bitmap;
     }
+
+
+
+
 
     private String getImgCachePath(String url) {
         FutureTarget<File> futureTarget = Glide.with(getContext()).load(url).downloadOnly(100, 100);

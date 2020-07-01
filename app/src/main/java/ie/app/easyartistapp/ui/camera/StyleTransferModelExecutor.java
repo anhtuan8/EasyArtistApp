@@ -5,7 +5,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
+
+import com.bumptech.glide.Glide;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
@@ -20,6 +23,7 @@ import org.tensorflow.lite.support.image.ops.ResizeWithCropOrPadOp;
 import org.tensorflow.lite.support.image.ops.Rot90Op;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -97,10 +101,14 @@ public class StyleTransferModelExecutor {
             Log.i(TAG, "running models");
             Log.d(TAG, styleImagePath.toString());
             Log.d(TAG, contentImagePath.toString());
-            InputStream inputStream = context.getAssets().open("thumbnails/" + styleImagePath);
-            Bitmap styleBitmap = BitmapFactory.decodeStream(inputStream);
-            Bitmap contentBitmap = BitmapFactory.decodeFile(contentImagePath);
-         //   Bitmap styleBitmap = BitmapFactory.decodeFile(styleImagePath);
+           // InputStream inputStream = context.getAssets().open("thumbnails/" + styleImagePath);
+          String stylePath = "//android_asset/" + "thumbnails/" + styleImagePath;
+//            Bitmap styleBitmap = ImageUtils.decodeBitmap(new File(stylePath));
+//            Bitmap contentBitmap =ImageUtils.decodeBitmap(new File(contentImagePath));
+          //  Bitmap styleBitmap = BitmapFactory.decodeFile(styleImagePath);
+//            String stylePath = "//android_asset/" + "thumbnails/" + styleImagePath;
+            Bitmap styleBitmap = Glide.with(context).asBitmap().load(Uri.fromFile(new File(stylePath))).submit().get();
+            Bitmap contentBitmap = Glide.with(context).asBitmap().load(contentImagePath).submit().get();
 
             TensorImage contentTensor = convertBitmapToTensorImage(contentBitmap, true);
             TensorImage styleTensor = convertBitmapToTensorImage(styleBitmap, false);
