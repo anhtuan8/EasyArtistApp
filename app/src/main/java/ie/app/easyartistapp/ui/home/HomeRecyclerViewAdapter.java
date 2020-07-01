@@ -26,15 +26,12 @@ import ie.app.easyartistapp.ui.article.ArticleActivity;
 
 public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeViewHolder> {
     private static final String TAG = "HomeRecyclerViewAdapter";
-
     private ArrayList<Article> articles = new ArrayList<>();
-    HomeFragment fragment;
     Context context;
 
-    public HomeRecyclerViewAdapter(Context context, HomeFragment fragment, ArrayList<Article> articles){
+    public HomeRecyclerViewAdapter(Context context, ArrayList<Article> articles){
         this.context = context;
         this.articles = articles;
-        this.fragment = fragment;
     }
 
     @NonNull

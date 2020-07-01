@@ -116,7 +116,7 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "initRecycleView: started");
         Log.v(TAG, getActivity().getPackageName());
         RecyclerView homeRecyclerView = view.findViewById(R.id.home_article_list);
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(),this, articleList);
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(getContext(), articleList);
         homeRecyclerView.setAdapter(adapter);
         homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }

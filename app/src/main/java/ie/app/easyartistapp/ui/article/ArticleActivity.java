@@ -37,12 +37,6 @@ public class ArticleActivity extends AppCompatActivity {
     private ImageButton favoriteButton;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar_menu,menu);
-        return true;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
@@ -62,12 +56,13 @@ public class ArticleActivity extends AppCompatActivity {
         favoriteButton = findViewById(R.id.imageButton);
 
         Toolbar toolbar = findViewById(R.id.appbar);
+        final TextView title = toolbar.findViewById(R.id.article_title);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
 //            actionBar.setHideOnContentScrollEnabled(true);
         }
 
@@ -122,6 +117,7 @@ public class ArticleActivity extends AppCompatActivity {
             @Override
             public void onChanged(String s) {
                 articleTitle.setText(s);
+                title.setText(s);
             }
         });
 
@@ -152,6 +148,12 @@ public class ArticleActivity extends AppCompatActivity {
         ArticleTagsRecyclerViewAdapter adapter = new ArticleTagsRecyclerViewAdapter(this, tags);
         tagList.setAdapter(adapter);
         tagList.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }
