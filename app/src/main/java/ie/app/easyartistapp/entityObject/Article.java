@@ -63,7 +63,7 @@ public class Article {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = standardizedString(name);
     }
 
     public String getTopic_id() {
@@ -105,5 +105,17 @@ public class Article {
         System.out.println("Name: " + name);
         System.out.println("Topic id: " + topic_id);
         System.out.println("Topic name: " + topic_name);
+    }
+
+    private String standardizedString(String s){
+        StringBuilder result = new StringBuilder();
+        result.append(Character.toUpperCase(s.charAt(0)));
+        for(int i=1; i<s.length();i++){
+            if(s.charAt(i) == '-'){
+                result.append(' ');
+            }
+            else result.append(s.charAt(i));
+        }
+        return result.toString();
     }
 }

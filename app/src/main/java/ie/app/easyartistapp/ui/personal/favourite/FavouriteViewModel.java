@@ -79,6 +79,7 @@ public class FavouriteViewModel extends ViewModel{
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Article art = document.toObject(Article.class);
+                            art.setName(standardizedString(art.getName()));
                             favoriteArticleList.putIfAbsent(art.getArticle_id(),art);
                             Log.d(TAG, "onComplete: article title last " + art.getName());
                             mFavoriteArticleList.setValue(favoriteArticleList);
@@ -89,6 +90,18 @@ public class FavouriteViewModel extends ViewModel{
                 }
             });
         }
+    }
+
+    private String standardizedString(String s){
+        StringBuilder result = new StringBuilder();
+        result.append(Character.toUpperCase(s.charAt(0)));
+        for(int i=1; i<s.length();i++){
+            if(s.charAt(i) == '-'){
+                result.append(' ');
+            }
+            else result.append(s.charAt(i));
+        }
+        return result.toString();
     }
 
     public void setContext(Context context) {
