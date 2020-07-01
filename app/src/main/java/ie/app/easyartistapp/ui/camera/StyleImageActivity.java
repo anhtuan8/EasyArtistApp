@@ -42,15 +42,20 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareButton;
 import com.facebook.share.widget.ShareDialog;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import ie.app.easyartistapp.R;
+import ie.app.easyartistapp.entityObject.ImagesItem;
+import ie.app.easyartistapp.entityObject.StyleImageObjects;
 
 public class StyleImageActivity extends AppCompatActivity implements StyleImageRecyclerViewAdapter.OnStyleImageListener, LoaderManager.LoaderCallbacks<Bitmap> {
 
@@ -61,14 +66,17 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
     private TextView content_caption_view = null;
     private final String ACTION_GALLERY = "ie.app.easyartistapp.ui.camera.ACTION_GALLERY";
     private static final String TAG = "MainActivity";
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = null;
+//    private ArrayList<String> mNames = new ArrayList<>();
+//    private ArrayList<String> mImageUrls = null;
     private String contentImagePath = null;
     private String styleImagePath = null;
     private ProgressBar progressBar = null;
+    private StyleImageObjects imageObject = null;
+    private List<ImagesItem>  imageItems = null;
 //    private FrameLayout constraintLayout = null;
 //    private ShareDialog shareDialog = null;
 //    private CallbackManager callbackManager = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +85,10 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
         imageView = findViewById(R.id.imageView);
         content_caption_view = findViewById(R.id.content_text);
         progressBar = findViewById(R.id.progress_bar);
-
+        Gson gson = new Gson();
+        String imageJson = loadJSONFromAsset();
+        imageObject = gson.fromJson(imageJson, StyleImageObjects.class);
+        imageItems = imageObject.getImages();
         androidx.appcompat.widget.Toolbar toolbar = (Toolbar) findViewById(R.id.style_toolbar);
 
         setSupportActionBar(toolbar);
@@ -201,7 +212,8 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
 //        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
 //        mNames.add("Washington");
         try{
-            mImageUrls = new ArrayList<String>(Arrays.asList(getApplicationContext().getAssets().list("thumbnails")));
+            ArrayList<String> mImageUrls = new ArrayList<String>(Arrays.asList(getApplicationContext().getAssets().list("thumbnails")));
+            for
             Log.d("STYLE_IMAGE", mImageUrls.get(0));
         }catch (IOException ioError){
             Log.d("Activity: StyleImageActivity:", ioError.toString());
@@ -210,7 +222,6 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
         initRecyclerView();
     }
 
-   // private Bitmap rotateImage(pyth)
 
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: init recyclerview");
@@ -327,6 +338,22 @@ public class StyleImageActivity extends AppCompatActivity implements StyleImageR
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getApplicationContext().getAssets().open("infor_style_image.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
 
