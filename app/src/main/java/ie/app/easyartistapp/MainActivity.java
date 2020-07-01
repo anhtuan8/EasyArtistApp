@@ -9,7 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+<<<<<<< HEAD
 import android.view.View;
+=======
+import android.view.Window;
+>>>>>>> remotes/origin/layout-tuan
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,7 +26,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+<<<<<<< HEAD
 import androidx.core.app.ActivityCompat;
+=======
+import androidx.drawerlayout.widget.DrawerLayout;
+>>>>>>> remotes/origin/layout-tuan
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -47,27 +55,51 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_main);
+<<<<<<< HEAD
         CurvedBottomNavigationView curvedBottomNavigationView = findViewById(R.id.nav_view);
         main_layout = findViewById(R.id.nav_host_fragment);
         curvedBottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
        // BottomNavigationView navView = findViewById(R.id.nav_view);
+=======
+
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+
+>>>>>>> remotes/origin/layout-tuan
         Toolbar toolbar = (Toolbar)findViewById(R.id.appbar);
         setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.activity_main_drawer);
+
 //         Passing each menu ID as a set of Ids because each
 //         menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+<<<<<<< HEAD
                 R.id.navigation_home, R.id.navigation_personal)
+=======
+                R.id.navigation_home, R.id.navigation_camera, R.id.navigation_personal)
+                .setDrawerLayout(drawer)
+>>>>>>> remotes/origin/layout-tuan
                 .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 //        NavigationUI.setupActionBarWithNavController(toolbar, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+<<<<<<< HEAD
         NavigationUI.setupWithNavController(curvedBottomNavigationView,navController);
+=======
+        NavigationUI.setupWithNavController(navView,navController);
+
+>>>>>>> remotes/origin/layout-tuan
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
+        if(actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_dehaze_black_24dp);
+//            actionBar.setHideOnContentScrollEnabled(true);
+        }
         Log.v("Toolbar", String.valueOf(toolbar.getMenu().size()));
 
         camera_fab = findViewById(R.id.camera_fab);
@@ -150,8 +182,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         switch (item.getItemId()){
             case R.id.appbarbutton_search:
                 //search event
+                Toast.makeText(this,"Entering search event",Toast.LENGTH_SHORT).show();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

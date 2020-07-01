@@ -1,6 +1,7 @@
 package ie.app.easyartistapp.ui.home;
 
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,46 +13,43 @@ import androidx.recyclerview.widget.RecyclerView;
 import ie.app.easyartistapp.R;
 
 public class HomeViewHolder extends RecyclerView.ViewHolder {
-    private boolean isTopicList;
-    private CardView topicCardView;
-    private ConstraintLayout topicItem;
-    private ImageView topicImage;
-    private TextView topicTitle, topicDescription;
+    private CardView cardView;
+    private ConstraintLayout item;
+    private ImageView image;
+    private TextView title, description;
+    private ImageButton favoriteButton;
 
     public HomeViewHolder(@NonNull View itemView) {
         super(itemView);
-        if(itemView.findViewById(R.id.home_topic_list) != null){
-            isTopicList = true;
-        }
-        else isTopicList = false;
-        topicCardView = itemView.findViewById(R.id.topicCardView);
-        topicItem = itemView.findViewById(R.id.topicItem);
-        topicImage = itemView.findViewById(R.id.topicImage);
-        topicTitle = itemView.findViewById(R.id.topicTitle);
-        topicDescription = itemView.findViewById(R.id.topicDescription);
+        cardView = itemView.findViewById(R.id.cardView);
+        item = itemView.findViewById(R.id.item);
+        image = itemView.findViewById(R.id.image);
+        title = itemView.findViewById(R.id.title);
+        description = itemView.findViewById(R.id.description);
+        favoriteButton = itemView.findViewById(R.id.favoriteButton);
     }
 
-    public CardView getTopicCardView() {
-        return topicCardView;
+    public CardView getCardView() {
+        return cardView;
     }
 
-    public ConstraintLayout getTopicItem() {
-        return topicItem;
+    public ConstraintLayout getItem() {
+        return item;
     }
 
-    public ImageView getTopicImage() {
-        return topicImage;
+    public ImageView getImage() {
+        return image;
     }
 
-    public TextView getTopicDescription() {
-        return topicDescription;
+    public TextView getDescription() {
+        return description;
     }
 
-    public TextView getTopicTitle() {
-        return topicTitle;
+    public TextView getTitle() {
+        return title;
     }
 
-    public boolean isTopicList() {
-        return isTopicList;
+    public ImageButton getFavoriteButton() {
+        return favoriteButton;
     }
 }
