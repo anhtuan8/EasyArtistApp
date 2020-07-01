@@ -35,6 +35,9 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
         mcontentPath = contentPath;
         mstylePath = stylePath;
         try {
+            if (styleTransferModelExecutor != null){
+                styleTransferModelExecutor.close();
+            }
             styleTransferModelExecutor = new StyleTransferModelExecutor((Activity) context, StyleTransferModelExecutor.Device.CPU);
         }catch (IOException io){
             Log.d(TAG, "IO File");
@@ -45,8 +48,7 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
     @Nullable
     @Override
     public Bitmap loadInBackground() {
-        String realPath = getImgCachePath(mstylePath);
-        Bitmap bitmap = styleTransferModelExecutor.execute(mcontentPath,realPath, getContext());
+        Bitmap bitmap = styleTransferModelExecutor.execute(mcontentPath, mstylePath, getContext());
         return bitmap;
     }
 
@@ -62,5 +64,12 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
             e.printStackTrace();
         }
         return null;
+
+//        Glide.with(getContext())
+//                .asBitmap()
+//                .load(uri)
+//                .override(512, 512)
+//                .apply(RequestOptions().transform(CropTop()))
+//                .into(imageView)
     }
 }

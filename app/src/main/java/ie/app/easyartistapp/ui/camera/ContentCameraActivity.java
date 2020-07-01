@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Rational;
 import android.util.Size;
 import android.view.View;
 import android.widget.ImageView;
@@ -80,6 +82,7 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
     private Camera camera = null;
     private final String ACTION_GALLERY = "ie.app.easyartistapp.ui.camera.ACTION_GALLERY";
     private File outputDirectory = null;
+    private final String CAMERA_INFO = "CAMERA_INFORMATION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +149,8 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
                 }
             }
         });
+
+
 
 
     }
@@ -237,6 +242,7 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
                     // Toast.makeText(getApplicationContext(), "Saving image", Toast.LENGTH_SHORT).show();
                     //Uri saved_uri = outputFileResults.getSavedUri();
                     //String filePath = Uri.fromFile(file).toString();
+                    logImageCaptureInfo(file);
                     Intent intent = new Intent(getApplicationContext(), StyleImageActivity.class);
                     intent.putExtra("UUID", "CAMERA");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, file.getPath());
@@ -249,6 +255,20 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
                 }
             });
         }
+    }
+
+    void logImageCaptureInfo(File file){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+//Returns null, sizes are in the options variable
+        BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        int width = options.outWidth;
+        int height = options.outHeight;
+//If you want, the MIME type will also be decoded (if possible)
+        String type = options.outMimeType;
+        Log.d("IMAGE_WIDTH_CAPTURE", Integer.toString(width));
+        Log.d("IMAGE_HEIGHT_CAPTURE", Integer.toString(height));
+        Log.d("IMAGE_TYPE_CAPTURE", type);
     }
 
     void accessGallery(){
@@ -277,19 +297,22 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         int width = dm.widthPixels;
         //int rotation = previewView.getDisplay().getRotation();
         previewView.setPreferredImplementationMode(PreviewView.ImplementationMode.SURFACE_VIEW);
-        Log.d("WIDTH", Integer.toString(width));
-        Log.d("HEIGHT", Integer.toString(height));
         Preview preview = new Preview.Builder().setTargetResolution(new Size(width, width)).build();
         imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                                 .setTargetResolution(new Size(width, width)).build();
+
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(lensFacing)
                 .build();
 
+
+
         cameraProvider.unbindAll();
         try{
             camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview, imageCapture);
+            //Log.d(CAMERA_INFO, camera.getCameraInfo().toString());
             preview.setSurfaceProvider(previewView.createSurfaceProvider());
+
         }catch(IllegalStateException ill){
             Log.e(TAG, "Use case binding failed ", ill);
         }

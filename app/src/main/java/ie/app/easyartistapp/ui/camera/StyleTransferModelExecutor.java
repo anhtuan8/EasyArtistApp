@@ -12,6 +12,7 @@ import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.gpu.GpuDelegate;
 import org.tensorflow.lite.nnapi.NnApiDelegate;
 import org.tensorflow.lite.support.common.FileUtil;
+import org.tensorflow.lite.support.common.ops.NormalizeOp;
 import org.tensorflow.lite.support.image.ImageProcessor;
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.image.ops.ResizeOp;
@@ -22,6 +23,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
@@ -95,8 +97,10 @@ public class StyleTransferModelExecutor {
             Log.i(TAG, "running models");
             Log.d(TAG, styleImagePath.toString());
             Log.d(TAG, contentImagePath.toString());
+            InputStream inputStream = context.getAssets().open("thumbnails/" + styleImagePath);
+            Bitmap styleBitmap = BitmapFactory.decodeStream(inputStream);
             Bitmap contentBitmap = BitmapFactory.decodeFile(contentImagePath);
-            Bitmap styleBitmap = BitmapFactory.decodeFile(styleImagePath);
+         //   Bitmap styleBitmap = BitmapFactory.decodeFile(styleImagePath);
 
             TensorImage contentTensor = convertBitmapToTensorImage(contentBitmap, true);
             TensorImage styleTensor = convertBitmapToTensorImage(styleBitmap, false);
@@ -112,7 +116,7 @@ public class StyleTransferModelExecutor {
 //            int[] outputStyleShape = interpreterTransform.getOutputTensor(0).shape();
 //            DataType outputStyleDatatype = interpreterPredict.getOutputTensor(0).dataType();
 
-            Float[][][][] imageOutputBuffer = new Float[1][CONTENT_IMAGE_SIZE][CONTENT_IMAGE_SIZE][3];
+            float[][][][] imageOutputBuffer = new float[1][CONTENT_IMAGE_SIZE][CONTENT_IMAGE_SIZE][3];
             HashMap<Integer, Object> outputsForStyleTransfer = new HashMap<Integer, Object>();
             outputsForStyleTransfer.put(0,imageOutputBuffer);
             interpreterTransform.runForMultipleInputsOutputs(inputsForStyleTransfer, outputsForStyleTransfer);
@@ -141,6 +145,7 @@ public class StyleTransferModelExecutor {
                             .add(new ResizeWithCropOrPadOp(size, size))
                             // Resize using Bilinear or Nearest neighbour
                             .add(new ResizeOp(CONTENT_IMAGE_SIZE, CONTENT_IMAGE_SIZE, ResizeOp.ResizeMethod.BILINEAR))
+                            .add(new NormalizeOp(0, 255))
                             .build();
         }else{
             imageProcessor =
@@ -149,6 +154,7 @@ public class StyleTransferModelExecutor {
                             .add(new ResizeWithCropOrPadOp(size, size))
                             // Resize using Bilinear or Nearest neighbour
                             .add(new ResizeOp(STYLE_IMAGE_SIZE, STYLE_IMAGE_SIZE, ResizeOp.ResizeMethod.BILINEAR))
+                            .add(new NormalizeOp(0, 255))
                             .build();
         }
 
@@ -165,7 +171,7 @@ public class StyleTransferModelExecutor {
         return tImage;
     }
 
-    private Bitmap convertArrayToBitmap(Float[][][][] imageArray, int imageWidth, int imageHeight){
+    private Bitmap convertArrayToBitmap(float[][][][] imageArray, int imageWidth, int imageHeight){
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap styledImage = Bitmap.createBitmap(imageWidth, imageHeight, conf);
         for(int x = 0; x < imageArray[0].length; x++){
@@ -192,5 +198,13 @@ public class StyleTransferModelExecutor {
 //        fileDescriptor.close()
 //        return retFile
 //    }
+
+    void close(){
+        interpreterPredict.close();
+        interpreterTransform.close();
+        if (gpuDelegate != null) {
+            gpuDelegate.close();
+        }
+    }
 
 }
