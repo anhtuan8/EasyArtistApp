@@ -45,6 +45,7 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryView
                 Log.d(TAG, "onClick: Clicked on pictures number " + position);
             }
         });
+        //load image
         setBitmapImagesFromFile(holder.getGalleryItemImage(),imagePaths.get(position));
     }
 

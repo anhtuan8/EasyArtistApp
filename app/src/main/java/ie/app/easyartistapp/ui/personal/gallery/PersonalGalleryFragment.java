@@ -50,6 +50,6 @@ public class PersonalGalleryFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.personal_gallery);
         GalleryRecyclerViewAdapter adapter = new GalleryRecyclerViewAdapter(getContext(),imagePaths);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
     }
 }

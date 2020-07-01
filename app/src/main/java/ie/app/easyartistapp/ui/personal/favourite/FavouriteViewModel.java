@@ -43,7 +43,7 @@ import ie.app.easyartistapp.entityObject.Article;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class FavouriteViewModel {
+public class FavouriteViewModel extends ViewModel{
     private static final String TAG = "FavouriteViewModel";
 
     private MutableLiveData<HashMap<String, Article>> mFavoriteArticleList;
@@ -89,6 +89,10 @@ public class FavouriteViewModel {
                 }
             });
         }
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public MutableLiveData<HashMap<String, Article>> getmFavoriteArticleList() {
