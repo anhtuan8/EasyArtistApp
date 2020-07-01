@@ -34,12 +34,19 @@
         </activity> <!-- Article Activity -->
         <activity
             android:name=".ui.article.ArticleActivity"
-            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ie.app.easyartistapp.MainActivity" />
         </activity>
+        <activity android:name=".ui.topic.TopicActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".ui.ArticleInATopic.ArticlesInATopicActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.topic.TopicActivity"/>
+        <activity android:name=".ui.AboutActivity"
+            android:screenOrientation="portrait"/>
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <provider android:authorities="com.facebook.app.FacebookContentProvider973210803109257"
             android:name="com.facebook.FacebookContentProvider"
