@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -22,9 +24,9 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryView
     final String galleryFolder="/galleries";
 
     private Context context;
-    private ArrayList<String> imagePaths;
+    private File[] imagePaths;
 
-    public GalleryRecyclerViewAdapter(Context context, ArrayList<String> imagePaths){
+    public GalleryRecyclerViewAdapter(Context context, File[] imagePaths){
         this.context = context;
         this.imagePaths = imagePaths;
     }
@@ -45,13 +47,17 @@ public class GalleryRecyclerViewAdapter extends RecyclerView.Adapter<GalleryView
                 Log.d(TAG, "onClick: Clicked on pictures number " + position);
             }
         });
-        //load image
-        setBitmapImagesFromFile(holder.getGalleryItemImage(),imagePaths.get(position));
+        //setBitmapImagesFromFile(holder.getGalleryItemImage(),imagePaths.get(position));
+        File imagePath = imagePaths[position];
+        Glide.with(context)
+                .load(imagePath) // Uri of the picture
+                .override(200, 200)
+                .into(holder.getGalleryItemImage());
     }
 
     @Override
     public int getItemCount() {
-        return imagePaths.size();
+        return imagePaths.length;
     }
 
     /**
