@@ -1,13 +1,18 @@
 package ie.app.easyartistapp.ui.camera;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +40,9 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
         mcontentPath = contentPath;
         mstylePath = stylePath;
         try {
+            if (styleTransferModelExecutor != null){
+                styleTransferModelExecutor.close();
+            }
             styleTransferModelExecutor = new StyleTransferModelExecutor((Activity) context, StyleTransferModelExecutor.Device.CPU);
         }catch (IOException io){
             Log.d(TAG, "IO File");
@@ -45,10 +53,13 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
     @Nullable
     @Override
     public Bitmap loadInBackground() {
-        String realPath = getImgCachePath(mstylePath);
-        Bitmap bitmap = styleTransferModelExecutor.execute(mcontentPath,realPath, getContext());
+        Bitmap bitmap = styleTransferModelExecutor.execute(mcontentPath, mstylePath, getContext());
         return bitmap;
     }
+
+
+
+
 
     private String getImgCachePath(String url) {
         FutureTarget<File> futureTarget = Glide.with(getContext()).load(url).downloadOnly(100, 100);
@@ -62,5 +73,12 @@ public class MLExecutionLoader extends AsyncTaskLoader<Bitmap> {
             e.printStackTrace();
         }
         return null;
+
+//        Glide.with(getContext())
+//                .asBitmap()
+//                .load(uri)
+//                .override(512, 512)
+//                .apply(RequestOptions().transform(CropTop()))
+//                .into(imageView)
     }
 }

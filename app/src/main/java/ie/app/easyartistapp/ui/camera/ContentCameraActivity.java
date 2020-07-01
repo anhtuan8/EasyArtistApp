@@ -16,18 +16,26 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import androidx.camera.core.Camera;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Rational;
 import android.util.Size;
+import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -36,6 +44,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -43,6 +52,7 @@ import java.util.concurrent.ExecutorService;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.lifecycle.LifecycleOwner;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.Executors;
@@ -57,12 +67,13 @@ import ie.app.easyartistapp.R;
 import static androidx.camera.core.AspectRatio.RATIO_16_9;
 import static androidx.camera.core.AspectRatio.RATIO_4_3;
 
-public class ContentCameraActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class ContentCameraActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final String TAG = "BINDING_ERROR";
     private int CAMERA_REQUEST_CODE_PERMISSIONS = 0;
     private int GALLERY_REQUEST_CODE_PERMISSIONS = 0;
     private int CAPTURE_REQUEST_CODE_PERMISSIONS = 0;
+    private String cameraId = "0";
 
     private final String[] CAMERA_REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA"};
     private final String[] GALLERY_REQUIRED_PERMISSIONS = new String[]{"android.permission.READ_EXTERNAL_STORAGE"};
@@ -80,6 +91,9 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
     private Camera camera = null;
     private final String ACTION_GALLERY = "ie.app.easyartistapp.ui.camera.ACTION_GALLERY";
     private File outputDirectory = null;
+    private final String CAMERA_INFO = "CAMERA_INFORMATION";
+    private CameraCharacteristics characteristics = null;
+    private CameraManager cameraManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +111,10 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        cameraManager = (CameraManager)getApplicationContext().getSystemService(Context.CAMERA_SERVICE);
+
+
+
         outputDirectory = this.getFilesDir();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,9 +124,9 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         });
 
 
-        if(cameraPermissionsGranted()){
+        if (cameraPermissionsGranted()) {
             setUpCamera(); //start camera if permission has been granted by user
-        } else{
+        } else {
             ActivityCompat.requestPermissions(this, CAMERA_REQUIRED_PERMISSIONS, CAMERA_REQUEST_CODE_PERMISSIONS);
         }
 
@@ -116,9 +134,9 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         switch_camera_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (lensFacing == CameraSelector.LENS_FACING_BACK){
+                if (lensFacing == CameraSelector.LENS_FACING_BACK) {
                     lensFacing = CameraSelector.LENS_FACING_FRONT;
-                }else{
+                } else {
                     lensFacing = CameraSelector.LENS_FACING_BACK;
                 }
                 bindCameraUseCases();
@@ -128,9 +146,9 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         capture_image_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (capturePermissionsGranted()){
+                if (capturePermissionsGranted()) {
                     captureImage();
-                }else{
+                } else {
                     ActivityCompat.requestPermissions(ContentCameraActivity.this, CAPTURE_REQUIRED_PERMISSIONS, CAPTURE_REQUEST_CODE_PERMISSIONS);
                 }
             }
@@ -139,9 +157,9 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         gallery_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (galleryPermissionsGranted()){
+                if (galleryPermissionsGranted()) {
                     accessGallery();
-                }else{
+                } else {
                     ActivityCompat.requestPermissions(ContentCameraActivity.this, GALLERY_REQUIRED_PERMISSIONS, GALLERY_REQUEST_CODE_PERMISSIONS);
                 }
             }
@@ -155,7 +173,7 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
                                            @NonNull int[] grantResults) {
 
 
-        if (requestCode == GALLERY_REQUEST_CODE_PERMISSIONS){
+        if (requestCode == GALLERY_REQUEST_CODE_PERMISSIONS) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 accessGallery();
             } else {
@@ -176,9 +194,7 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }
-        }
-
-        else if(requestCode == CAPTURE_REQUEST_CODE_PERMISSIONS) {
+        } else if (requestCode == CAPTURE_REQUEST_CODE_PERMISSIONS) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 captureImage();
             } else {
@@ -216,19 +232,33 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
                     }
                 }
             }
-        }else{
+        } else {
             Toast.makeText(this, "No success!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    void captureImage(){
+    void captureImage() {
         //File file = new File(outputDirectory, System.currentTimeMillis() + ".png");
+
+        cameraId = getCameraId(cameraManager);
+
+        try {
+            characteristics = cameraManager.getCameraCharacteristics(cameraId);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+
+        boolean mirrored = characteristics.get(CameraCharacteristics.LENS_FACING) ==
+                CameraCharacteristics.LENS_FACING_FRONT;
+        int exifOrientation = ImageUtils.computeExifOrientation(previewView.getDisplay().getRotation(), mirrored);
         File mImageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "picture");
         boolean isDirectoryCreated = mImageDir.exists() || mImageDir.mkdirs();
-        //Log.d("File", file.toString());
-        if(isDirectoryCreated) {
 
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picture", System.currentTimeMillis() + ".jpg");
+        if (isDirectoryCreated) {
+
+            File file = new File(getBaseContext().getCacheDir(), System.currentTimeMillis() + ".jpg");
+
+
             ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
             imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(ContentCameraActivity.this), new ImageCapture.OnImageSavedCallback() {
                 @Override
@@ -237,6 +267,12 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
                     // Toast.makeText(getApplicationContext(), "Saving image", Toast.LENGTH_SHORT).show();
                     //Uri saved_uri = outputFileResults.getSavedUri();
                     //String filePath = Uri.fromFile(file).toString();
+                    logImageCaptureInfo(file);
+                    try {
+                        ImageUtils.setExifOrientation(file.getAbsolutePath(), Integer.toString(exifOrientation));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Intent intent = new Intent(getApplicationContext(), StyleImageActivity.class);
                     intent.putExtra("UUID", "CAMERA");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, file.getPath());
@@ -251,18 +287,32 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         }
     }
 
-    void accessGallery(){
+    void logImageCaptureInfo(File file) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+//Returns null, sizes are in the options variable
+        BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        int width = options.outWidth;
+        int height = options.outHeight;
+//If you want, the MIME type will also be decoded (if possible)
+        String type = options.outMimeType;
+        Log.d("IMAGE_WIDTH_CAPTURE", Integer.toString(width));
+        Log.d("IMAGE_HEIGHT_CAPTURE", Integer.toString(height));
+        Log.d("IMAGE_TYPE_CAPTURE", type);
+    }
+
+    void accessGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE_PERMISSIONS);
     }
 
-    void setUpCamera(){
+    void setUpCamera() {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(() -> {
             try {
                 cameraProvider = cameraProviderFuture.get();
                 bindCameraUseCases();
-            } catch(ExecutionException | InterruptedException e){
+            } catch (ExecutionException | InterruptedException e) {
                 Log.v("CameraProvider", cameraProvider.toString());
             }
         }, ContextCompat.getMainExecutor(this));
@@ -275,52 +325,75 @@ public class ContentCameraActivity extends AppCompatActivity implements Activity
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int height = dm.heightPixels;
         int width = dm.widthPixels;
-        //int rotation = previewView.getDisplay().getRotation();
+//        int rotation = previewView.getDisplay().getRotation();
+
+
         previewView.setPreferredImplementationMode(PreviewView.ImplementationMode.SURFACE_VIEW);
-        Log.d("WIDTH", Integer.toString(width));
-        Log.d("HEIGHT", Integer.toString(height));
         Preview preview = new Preview.Builder().setTargetResolution(new Size(width, width)).build();
         imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                                .setTargetResolution(new Size(width, width)).build();
+                .setTargetResolution(new Size(width, width)).build();
+
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(lensFacing)
                 .build();
 
+
         cameraProvider.unbindAll();
-        try{
-            camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview, imageCapture);
+        try {
+            camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
+            //Log.d(CAMERA_INFO, camera.getCameraInfo().toString());
             preview.setSurfaceProvider(previewView.createSurfaceProvider());
-        }catch(IllegalStateException ill){
+
+        } catch (IllegalStateException ill) {
             Log.e(TAG, "Use case binding failed ", ill);
         }
 
     }
 
-   private Boolean cameraPermissionsGranted(){
-        for(String permission: CAMERA_REQUIRED_PERMISSIONS){
-            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED){
-                return false;
-            }
-        }
-        return true;
-   }
-
-    private Boolean capturePermissionsGranted(){
-        for(String permission: CAPTURE_REQUIRED_PERMISSIONS){
-            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED){
+    private Boolean cameraPermissionsGranted() {
+        for (String permission : CAMERA_REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
         return true;
     }
 
-    private Boolean galleryPermissionsGranted(){
-        for(String permission: GALLERY_REQUIRED_PERMISSIONS){
-            if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED){
+    private Boolean capturePermissionsGranted() {
+        for (String permission : CAPTURE_REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
         return true;
     }
+
+    private Boolean galleryPermissionsGranted() {
+        for (String permission : GALLERY_REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    String getCameraId(CameraManager cManager) {
+        try {
+            for (final String cameraId : cManager.getCameraIdList()) {
+                CameraCharacteristics characteristics = cManager.getCameraCharacteristics(cameraId);
+                Integer cOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                //if (cOrientation == CameraCharacteristics.LENS_FACING) return cameraId;
+                if(lensFacing == characteristics.get(CameraCharacteristics.LENS_FACING)){
+                    return cameraId;
+                }
+            }
+        } catch (CameraAccessException ex) {
+            return null;
+        }
+        return null;
+    }
+
+
+
 
 }
